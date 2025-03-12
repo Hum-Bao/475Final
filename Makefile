@@ -1,7 +1,16 @@
 # Compiler and flags
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -I./SQLAPI/include
-LDFLAGS = -L./SQLAPI/lib -Wl,-Bstatic -lsqlapi -Wl,-Bdynamic
+
+# Detect OS
+UNAME_S := $(shell uname -s)
+
+# OS-specific linker flags
+ifeq ($(UNAME_S), Linux)
+    LDFLAGS = -L./SQLAPI/lib -Wl,-Bstatic -lsqlapi -Wl,-Bdynamic
+else ifeq ($(UNAME_S), Darwin)
+    LDFLAGS = -L./SQLAPI/lib -lsqlapi
+endif
 
 # Source files
 SRC = main.cpp  # Add all your .cpp files
