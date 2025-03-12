@@ -77,6 +77,7 @@ CREATE TABLE Good (
   ID INTEGER NOT NULL,
   name TEXT NOT NULL,
   description TEXT,
+  SKU	TEXT	not null unique,
   categoryID TEXT NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (categoryID) REFERENCES GoodCategory(ID) Deferrable Initially Deferred
@@ -92,3 +93,137 @@ CREATE TABLE TransactionDetail (
   FOREIGN KEY (transactionID) REFERENCES Transaction(ID) Deferrable Initially Deferred,
   FOREIGN KEY (goodID) REFERENCES Good(ID) Deferrable Initially Deferred
 );
+----------------------------------------------------------------------------------------
+/qecho INSERTING DATA
+----------------------------------------------------------------------------------------
+-- Adding Shipping Types
+INSERT INTO ShippingType (ID, name) VALUES
+('ST1', 'Ground'),
+('ST2', 'Air'),
+('ST3', 'Sea'),
+('ST4', 'Express'),
+('ST5', 'Overnight'),
+('ST6', 'International');
+
+-- Adding Shipping Couriers
+INSERT INTO ShippingCourier (ID, name) VALUES
+('SC1', 'FedEx'),
+('SC2', 'UPS'),
+('SC3', 'DHL'),
+('SC4', 'Royal Mail'),
+('SC5', 'USPS'),
+('SC6', 'Canada Post');
+
+-- Adding Shipping Methods
+INSERT INTO ShippingMethod (ID, typeID, courierID) VALUES
+(1, 'ST1', 'SC1'),
+(2, 'ST2', 'SC2'),
+(3, 'ST3', 'SC3'),
+(4, 'ST4', 'SC4'),
+(5, 'ST5', 'SC5'),
+(6, 'ST6', 'SC6'),
+(7, 'ST1', 'SC1');  -- Corrected shipping method with ID 7
+
+-- Adding Customers
+INSERT INTO Customer (ID, name, email, phone) VALUES
+(1, 'Alice Johnson', 'alice@example.com', '123-456-7890'),
+(2, 'Bob Smith', 'bob@example.com', '987-654-3210'),
+(3, 'Charlie Brown', 'charlie@example.com', '555-123-4567'),
+(4, 'David Lee', 'david@example.com', '444-555-6666'),
+(5, 'Eva White', 'eva@example.com', '555-666-7777'),
+(6, 'Frank Green', 'frank@example.com', '666-777-8888'),
+(7, 'Grace Black', 'grace@example.com', '777-888-9999'),
+(8, 'Hannah Blue', 'hannah@example.com', '888-999-0000');
+
+-- Adding Transaction Types
+INSERT INTO TransactionType (type, name) VALUES
+('P', 'Purchase'),
+('R', 'Return'),
+('E', 'Exchange'),
+('A', 'Adjustment'),
+('C', 'Cancellation'),
+('S', 'Subscription');
+
+-- Adding Regions
+INSERT INTO Region (ID, name) VALUES
+(1, 'North America'),
+(2, 'West Europe'),
+(3, 'East Europe'),
+(4, 'South America'),
+(5, 'Africa'),
+(6, 'South Asia'),
+(7, 'East Asia');
+
+-- Adding Facilities
+INSERT INTO Facility (ID, name, regionID) VALUES
+(1, 'Warehouse A', 1),  -- North America
+(2, 'Warehouse B', 2),  -- West Europe
+(3, 'Warehouse C', 3),  -- East Europe
+(4, 'Warehouse D', 4),  -- South America
+(5, 'Warehouse E', 5),  -- Africa
+(6, 'Warehouse F', 6),  -- South Asia
+(7, 'Warehouse G', 7);  -- East Asia
+
+-- Adding Goods Categories
+INSERT INTO GoodCategory (ID, name) VALUES
+('GC1', 'Electronics'),
+('GC2', 'Clothing'),
+('GC3', 'Furniture'),
+('GC4', 'Home Appliances'),
+('GC5', 'Books'),
+('GC6', 'Toys'),
+('GC7', 'Sports Equipment'),
+('GC8', 'Meat');
+
+-- Adding Goods
+INSERT INTO Good (ID, name, description, SKU, categoryID) VALUES
+(1, 'Laptop', 'High-performance laptop', 'SKU001', 'GC1'),
+(2, 'T-Shirt', 'Cotton t-shirt', 'SKU002', 'GC2'),
+(3, 'Desk', 'Wooden office desk', 'SKU003', 'GC3'),
+(4, 'Refrigerator', 'Energy-efficient refrigerator', 'SKU004', 'GC4'),
+(5, 'Novel', 'Best-selling novel', 'SKU005', 'GC5'),
+(6, 'Action Figure', 'Collectible action figure', 'SKU006', 'GC6'),
+(7, 'Football', 'Official size football', 'SKU007', 'GC7'),
+(8, 'Steak', 'Premium grade beef steak', 'SKU008', 'GC8'),
+(9, 'Shampoo', 'Hair care shampoo', 'SKU009', 'GC4'),
+(10, 'Car Tire', 'All-season car tire', 'SKU010', 'GC7'),
+(11, 'Apple', 'Fresh red apple', 'SKU011', 'GC8'),
+(12, 'Toothpaste', 'Mint flavored toothpaste', 'SKU012', 'GC4'),
+(13, 'Motor Oil', '5W-30 Motor Oil', 'SKU013', 'GC7'),
+(14, 'Washing Machine', 'Automatic washing machine', 'SKU014', 'GC4'),
+(15, 'Book Light', 'Portable book light', 'SKU015', 'GC5'),
+(16, 'Toy Train', 'Battery-operated toy train', 'SKU016', 'GC6'),
+(17, 'Basketball', 'Official NBA basketball', 'SKU017', 'GC7'),
+(18, 'Chicken Breast', 'Boneless skinless chicken breast', 'SKU018', 'GC8');
+
+-- Adding Transactions
+INSERT INTO Transaction (ID, transactionType, time, shippingID, facilityID, customerID, transactionNum) VALUES
+(1, 'P', '2025-03-12 10:00:00', 1, 1, 1, 'TXN1001'),  -- North America
+(2, 'R', '2025-03-12 11:30:00', 2, 2, 2, 'TXN1002'),  -- West Europe
+(3, 'E', '2025-03-12 12:15:00', 3, 3, 3, 'TXN1003'),  -- East Europe
+(4, 'P', '2025-03-13 09:00:00', 4, 4, 4, 'TXN1004'),  -- South America
+(5, 'R', '2025-03-13 10:30:00', 5, 5, 5, 'TXN1005'),  -- Africa
+(6, 'E', '2025-03-13 11:00:00', 6, 6, 6, 'TXN1006'),  -- South Asia
+(7, 'P', '2025-03-13 12:00:00', 7, 7, 7, 'TXN1007'),  -- East Asia
+(8, 'R', '2025-03-13 13:30:00', 1, 1, 8, 'TXN1008');  -- North America
+
+-- Adding Transaction Details
+INSERT INTO TransactionDetail (ID, transactionID, goodID, quantity, weight) VALUES
+(1, 1, 1, 1, '2.5kg'),
+(2, 2, 2, 3, '1.2kg'),
+(3, 3, 3, 1, '20kg'),
+(4, 4, 4, 2, '45kg'),
+(5, 5, 5, 1, '0.8kg'),
+(6, 6, 6, 3, '1.2kg'),
+(7, 7, 7, 1, '0.5kg'),
+(8, 8, 8, 2, '1.3kg'),
+(9, 4, 9, 3, '1.0kg'),
+(10, 5, 10, 4, '8.0kg'),
+(11, 6, 11, 10, '5.0kg'),
+(12, 7, 12, 2, '0.6kg'),
+(13, 8, 13, 1, '2.0kg'),
+(14, 1, 14, 1, '35kg'),
+(15, 2, 15, 1, '0.5kg'),
+(16, 3, 16, 1, '0.7kg'),
+(17, 4, 17, 1, '0.6kg'),
+(18, 5, 18, 2, '3.5kg');
