@@ -2,14 +2,22 @@
 CXX = g++
 CXXFLAGS = -std=c++17 -Wall -I./SQLAPI/include
 
-# Detect OS
+# Detect OS and Architecture
 UNAME_S := $(shell uname -s)
+ARCH := $(shell uname -m)
 
-# OS-specific linker flags
+# Default library path
+LIB_PATH = -L./SQLAPI/lib
+
+# Set the correct linker flags based on OS and architecture
 ifeq ($(UNAME_S), Linux)
-    LDFLAGS = -L./SQLAPI/lib -Wl,-Bstatic -lsqlapi -Wl,-Bdynamic
+    LDFLAGS = $(LIB_PATH) -Wl,-Bstatic -lsqlapi -Wl,-Bdynamic
 else ifeq ($(UNAME_S), Darwin)
-    LDFLAGS = -L./SQLAPI/lib -lsqlapi
+    ifeq ($(ARCH), x86_64)
+        LDFLAGS = $(LIB_PATH) -lsqlapi_x86_64  # Use x86_64 version
+    else ifeq ($(ARCH), arm64)
+        LDFLAGS = $(LIB_PATH) -lsqlapi_arm64  # Use arm64 version
+    endif
 endif
 
 # Source files
