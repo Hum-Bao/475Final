@@ -4,21 +4,21 @@ CREATE DATABASE baadb;
 SELECT current_database();
 
 CREATE TABLE ShippingType (
-  ID STRING NOT NULL,
-  name STRING NOT NULL,
+  ID TEXT NOT NULL,
+  name TEXT NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE ShippingCourier (
-  ID STRING NOT NULL,
-  name STRING NOT NULL,
+  ID TEXT NOT NULL,
+  name TEXT NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE ShippingMethod (
   ID INTEGER NOT NULL,
-  typeID STRING,
-  courierID STRING,
+  typeID TEXT,
+  courierID TEXT,
   PRIMARY KEY (ID),
   FOREIGN KEY (courierID) REFERENCES ShippingCourier(ID) DEFERRABLE,
   FOREIGN KEY (typeID) REFERENCES ShippingType(ID) DEFERRABLE
@@ -26,27 +26,27 @@ CREATE TABLE ShippingMethod (
 
 CREATE TABLE Customer (
   ID INTEGER NOT NULL,
-  name STRING NOT NULL,
-  email STRING UNIQUE,
-  phone STRING,
+  name TEXT NOT NULL,
+  email TEXT UNIQUE,
+  phone TEXT,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE TransactionType (
   type CHARACTER NOT NULL,
-  name STRING NOT NULL,
+  name TEXT NOT NULL,
   PRIMARY KEY (type)
 );
 
 CREATE TABLE Region (
   ID INTEGER NOT NULL,
-  name STRING NOT NULL,
+  name TEXT NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE Facility (
   ID INTEGER NOT NULL,
-  name STRING UNIQUE NOT NULL,
+  name TEXT UNIQUE NOT NULL,
   regionID INTEGER NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (regionID) REFERENCES Region(ID) DEFERRABLE
@@ -59,7 +59,7 @@ CREATE TABLE Transaction (
   shippingID INTEGER NOT NULL,
   facilityID INTEGER NOT NULL,
   customerID INTEGER NOT NULL,
-  transactionNum STRING UNIQUE NOT NULL,
+  transactionNum TEXT UNIQUE NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (customerID) REFERENCES Customer(ID) DEFERRABLE,
   FOREIGN KEY (shippingID) REFERENCES ShippingMethod(ID) DEFERRABLE,
@@ -68,16 +68,16 @@ CREATE TABLE Transaction (
 );
 
 CREATE TABLE GoodCategory (
-  ID STRING NOT NULL,
-  name STRING NOT NULL,
+  ID TEXT NOT NULL,
+  name TEXT NOT NULL,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE Good (
   ID INTEGER NOT NULL,
-  name STRING NOT NULL,
-  description STRING,
-  categoryID STRING NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT,
+  categoryID TEXT NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (categoryID) REFERENCES GoodCategory(ID) DEFERRABLE
 );
@@ -87,7 +87,7 @@ CREATE TABLE TransactionDetail (
   transactionID INTEGER NOT NULL,
   goodID INTEGER NOT NULL,
   quantity INTEGER NOT NULL,
-  weight STRING NOT NULL,
+  weight TEXT NOT NULL,
   PRIMARY KEY (ID),
   FOREIGN KEY (transactionID) REFERENCES Transaction(ID) DEFERRABLE,
   FOREIGN KEY (goodID) REFERENCES Good(ID) DEFERRABLE
