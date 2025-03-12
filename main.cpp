@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <iostream>
 
-#include <SQLAPI.h>
 #include "SQLAPI/include/SQLAPI.h"
 
 int main(int argc, char* argv[]) {
