@@ -1,5 +1,7 @@
 CREATE DATABASE baadb;
 \c baadb
+\qecho new commit
+\qecho test
 
 SELECT current_database();
 
