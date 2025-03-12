@@ -1,7 +1,7 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I/home/kbricks/CSS475/FINAL/SQLAPI/include
-LDFLAGS = -L/home/kbricks/CSS475/FINAL/SQLAPI/lib -Wl,-Bstatic -lsqlapi -Wl,-Bdynamic
+CXXFLAGS = -std=c++17 -Wall -I./SQLAPI/include
+LDFLAGS = -L./SQLAPI/lib -Wl,-Bstatic -lsqlapi -Wl,-Bdynamic
 
 # Source files
 SRC = main.cpp  # Add all your .cpp files
