@@ -1,7 +1,5 @@
 CREATE DATABASE baadb;
 \c baadb
-\qecho new commit
-\qecho test
 
 SELECT current_database();
 
@@ -22,8 +20,8 @@ CREATE TABLE ShippingMethod (
   typeID TEXT,
   courierID TEXT,
   PRIMARY KEY (ID),
-  FOREIGN KEY (courierID) REFERENCES ShippingCourier(ID) DEFERRABLE,
-  FOREIGN KEY (typeID) REFERENCES ShippingType(ID) DEFERRABLE
+  FOREIGN KEY (courierID) REFERENCES ShippingCourier(ID) Deferrable Initially Deferred,
+  FOREIGN KEY (typeID) REFERENCES ShippingType(ID) Deferrable Initially Deferred
 );
 
 CREATE TABLE Customer (
@@ -51,7 +49,7 @@ CREATE TABLE Facility (
   name TEXT UNIQUE NOT NULL,
   regionID INTEGER NOT NULL,
   PRIMARY KEY (ID),
-  FOREIGN KEY (regionID) REFERENCES Region(ID) DEFERRABLE
+  FOREIGN KEY (regionID) REFERENCES Region(ID) Deferrable Initially Deferred
 );
 
 CREATE TABLE Transaction (
@@ -63,10 +61,10 @@ CREATE TABLE Transaction (
   customerID INTEGER NOT NULL,
   transactionNum TEXT UNIQUE NOT NULL,
   PRIMARY KEY (ID),
-  FOREIGN KEY (customerID) REFERENCES Customer(ID) DEFERRABLE,
-  FOREIGN KEY (shippingID) REFERENCES ShippingMethod(ID) DEFERRABLE,
-  FOREIGN KEY (transactionType) REFERENCES TransactionType(type) DEFERRABLE,
-  FOREIGN KEY (facilityID) REFERENCES Facility(ID) DEFERRABLE
+  FOREIGN KEY (customerID) REFERENCES Customer(ID) Deferrable Initially Deferred,
+  FOREIGN KEY (shippingID) REFERENCES ShippingMethod(ID) Deferrable Initially Deferred,
+  FOREIGN KEY (transactionType) REFERENCES TransactionType(type) Deferrable Initially Deferred,
+  FOREIGN KEY (facilityID) REFERENCES Facility(ID) Deferrable Initially Deferred
 );
 
 CREATE TABLE GoodCategory (
@@ -81,7 +79,7 @@ CREATE TABLE Good (
   description TEXT,
   categoryID TEXT NOT NULL,
   PRIMARY KEY (ID),
-  FOREIGN KEY (categoryID) REFERENCES GoodCategory(ID) DEFERRABLE
+  FOREIGN KEY (categoryID) REFERENCES GoodCategory(ID) Deferrable Initially Deferred
 );
 
 CREATE TABLE TransactionDetail (
@@ -91,6 +89,6 @@ CREATE TABLE TransactionDetail (
   quantity INTEGER NOT NULL,
   weight TEXT NOT NULL,
   PRIMARY KEY (ID),
-  FOREIGN KEY (transactionID) REFERENCES Transaction(ID) DEFERRABLE,
-  FOREIGN KEY (goodID) REFERENCES Good(ID) DEFERRABLE
+  FOREIGN KEY (transactionID) REFERENCES Transaction(ID) Deferrable Initially Deferred,
+  FOREIGN KEY (goodID) REFERENCES Good(ID) Deferrable Initially Deferred
 );
