@@ -13,14 +13,14 @@ else ifeq ($(UNAME_S), Darwin)
 endif
 
 # Source files
-SRC = main.cpp  # Add all your .cpp files
+SRC = main.cpp  # Add all your .cpp files here
 OBJ = $(SRC:.cpp=.o)
 EXEC = main
 
 # Default target
 all: $(EXEC)
 
-# Linking with static library
+# Linking
 $(EXEC): $(OBJ)
 	$(CXX) $(OBJ) -o $(EXEC) $(LDFLAGS)
 
