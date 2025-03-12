@@ -15,10 +15,10 @@ ifeq ($(UNAME_S), Linux)
 else ifeq ($(UNAME_S), Darwin)
     ifeq ($(ARCH), x86_64)
 		LIB_PATH = -L./SQLAPI/lib/x86_64
-        LDFLAGS = $(LIB_PATH) -lsqlapi -Wl,-rpath,@executable_path/SQLAPI/lib/x86_64 # Use x86_64 version
+        LDFLAGS = $(LIB_PATH) -lsqlapi -Wl,-rpath,@executable_path/../SQLAPI/lib/x86_64 # Use x86_64 version
     else ifeq ($(ARCH), arm64)
 		LIB_PATH = -L./SQLAPI/lib/arm64
-        LDFLAGS = $(LIB_PATH) -lsqlapi -Wl,-rpath,@executable_path/SQLAPI/lib/arm64 # Use arm64 version
+        LDFLAGS = $(LIB_PATH) -lsqlapi -Wl,-rpath,@executable_path/../SQLAPI/lib/arm64 # Use arm64 version
     endif
 endif
 
