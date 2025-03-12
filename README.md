@@ -10,3 +10,8 @@ Install steps:
 Build steps:
 1. Type make and then ./main to run
 2. If you don't have make, install it (On mac run xcode-select --install)
+
+Pushing commits:
+1. Git add (name of file or . for all files)
+2. Git commit (Message describing push (can be skipped for default message))
+3. Git push
