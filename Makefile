@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I../SQLAPI/include
+CXXFLAGS = -std=c++17 -Wall -I./SQLAPI/include
 
 # Detect OS and Architecture
 UNAME_S := $(shell uname -s)
@@ -15,6 +15,8 @@ ifeq ($(UNAME_S), Linux)
 else ifeq ($(UNAME_S), Darwin)
     ifeq ($(ARCH), x86_64)
         LDFLAGS = -L./SQLAPI/lib/x86_64 -lsqlapi -Wl,-rpath,@loader_path/SQLAPI/lib/x86_64 -Wl,-rpath,@executable_path/SQLAPI/lib/x86_64 # Use x86_64 version
+        CXXFLAGS += -I/usr/local/opt/libpq/include
+        LDFLAGS += -L/usr/local/opt/libpq/lib
 
     else ifeq ($(ARCH), arm64)
         LDFLAGS = -L./SQLAPI/lib/arm64 -lsqlapi -Wl,-rpath,@loader_path/SQLAPI/lib/arm64 # Use arm64 version
