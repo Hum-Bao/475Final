@@ -14,7 +14,8 @@ ifeq ($(UNAME_S), Linux)
     LDFLAGS = -L./SQLAPI/lib -Wl,-Bstatic -lsqlapi -Wl,-Bdynamic
 else ifeq ($(UNAME_S), Darwin)
     ifeq ($(ARCH), x86_64)
-        LDFLAGS = -L./SQLAPI/lib/x86_64 -lsqlapi -Wl,-rpath,@loader_path/../SQLAPI/lib/x86_64 # Use x86_64 version
+        LDFLAGS = -L./SQLAPI/lib/x86_64 -lsqlapi -Wl,-rpath,@loader_path/../SQLAPI/lib/x86_64 -Wl,-rpath,@executable_path/../SQLAPI/lib/x86_64 # Use x86_64 version
+
     else ifeq ($(ARCH), arm64)
         LDFLAGS = -L./SQLAPI/lib/arm64 -lsqlapi -Wl,-rpath,@loader_path/../SQLAPI/lib/arm64 # Use arm64 version
     endif
