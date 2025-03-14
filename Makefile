@@ -14,13 +14,13 @@ else ifeq ($(UNAME_S), Darwin)
     ifeq ($(ARCH), x86_64)
         CXXFLAGS += -I/usr/local/opt/libpq/include
         LDFLAGS = -L./SQLAPI/lib/x86_64 -lsqlapi -Wl,-rpath,@loader_path/SQLAPI/lib/x86_64 -L/usr/local/opt/libpq/lib -lpq
-        POST_BUILD = install_name_tool -id '@rpath/libsqlapi.dylib' /SQLAPI/lib/x86_64/libsqlapi.dylib && \
-                     codesign -s - -f -o linker-signed /SQLAPI/lib/x86_64/libsqlapi.dylib
+        POST_BUILD = install_name_tool -id '@rpath/libsqlapi.dylib' $(CURDIR)/SQLAPI/lib/x86_64/libsqlapi.dylib && \
+                     codesign -s - -f -o linker-signed $(CURDIR)/SQLAPI/lib/x86_64/libsqlapi.dylib
     else ifeq ($(ARCH), arm64)
         CXXFLAGS += -I/usr/local/opt/libpq/include
         LDFLAGS = -L./SQLAPI/lib/arm64 -lsqlapi -Wl,-rpath,@loader_path/SQLAPI/lib/arm64 -L/usr/local/opt/libpq/lib -lpq
-        POST_BUILD = install_name_tool -id '@rpath/libsqlapi.dylib' /SQLAPI/lib/arm64/libsqlapi.dylib && \
-                     codesign -s - -f -o linker-signed /SQLAPI/lib/arm64/libsqlapi.dylib
+        POST_BUILD = install_name_tool -id '@rpath/libsqlapi.dylib' $(CURDIR)/SQLAPI/lib/arm64/libsqlapi.dylib && \
+                     codesign -s - -f -o linker-signed $(CURDIR)/SQLAPI/lib/arm64/libsqlapi.dylib
     endif
 endif
 
