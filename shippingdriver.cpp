@@ -1,20 +1,19 @@
-#include "customerdriver.h"
+#include "shippingdriver.h"
 #include <iostream>
-#include <string>
-#include "SQLAPI/include/SQLAPI.h"
-#include "customer.h"
+#include "shipping.h"
 
-const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
-    CustomerDriver::METHODS = {{{1, "CreateCustomer"},
-                                {2, "UpdateCustomer"},
-                                {3, "ViewCustomer"},
-                                {4, "ListAllCustomers"},
-                                {5, "Exit"}}};
+const std::array<std::pair<int, std::string>, ShippingDriver::NUM_METHODS>
+    ShippingDriver::METHODS = {{{1, "CreateShippingMethod"},
+                                {2, "UpdateShippingMethod"},
+                                {3, "ListAllShippingMethods"},
+                                {4, "ListPopularShippingMethods"},
+                                {5, "ListPopularShippingMethodsByRegion"},
+                                {6, "Exit"}}};
 
-const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
-    CustomerDriver::FIELDS = {{{1, "NAME"}, {2, "EMAIL"}, {3, "PHONE"}}};
+const std::array<std::pair<int, std::string>, ShippingDriver::NUM_FIELDS>
+    ShippingDriver::FIELDS = {{{1, "TYPE"}, {2, "NAME"}}};
 
-void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
+void ShippingDriver::SelectShippingAPI(SAConnection& con) {
     while (true) {
         std::cout << "Select API call: \n";
         for (const std::pair<int, std::string>& temp : METHODS) {
@@ -24,33 +23,31 @@ void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
         std::cin >> option;
         switch (option) {
             case 1: {
-                std::string name;
-                std::string email;
-                std::string phone;
+                std::string type;
+                std::string courier;
                 std::cin.ignore();
 
-                std::cout << "Enter customer name: ";
-                std::getline(std::cin, name);
+                std::cout << "Enter shipping type: ";
+                std::getline(std::cin, type);
 
-                std::cout << "\nEnter customer email: ";
-                std::getline(std::cin, email);
+                std::cout << "\nEnter shipping courier: ";
+                std::getline(std::cin, courier);
 
-                std::cout << "\nEnter customer phone number: ";
-                std::getline(std::cin, phone);
-
-                std::cout << name << ", " << email << ", " << phone << "\n";
-
-                Customer::CreateCustomer(con, name, email, phone);
+                Shipping::CreateShippingMethod(con, type, courier);
                 break;
             }
             case 2: {
-                std::string email;
+                std::string type;
+                std::string courier;
                 std::string change_field;
                 std::string new_val;
                 std::cin.ignore();
 
-                std::cout << "Enter customer email: ";
-                std::getline(std::cin, email);
+                std::cout << "Enter shipping type: ";
+                std::getline(std::cin, type);
+
+                std::cout << "\nEnter shipping courier: ";
+                std::getline(std::cin, courier);
 
                 std::cout << "Select field to update: \n";
                 for (const std::pair<int, std::string>& temp : FIELDS) {
@@ -63,10 +60,8 @@ void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
                 std::cout << "\nEnter new value: ";
                 std::getline(std::cin, new_val);
 
-                std::cout << email << ", " << change_field << ", " << new_val
-                          << '\n';
-
-                Customer::UpdateCustomer(con, email, change_field, new_val);
+                Shipping::UpdateShippingMethod(con, type, courier, change_field,
+                                               new_val);
                 break;
             }
             case 3: {

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include "customerdriver.h"
+#include "shippingdriver.h"
 
 #include "SQLAPI/include/SQLAPI.h"
 
@@ -44,6 +45,7 @@ int main(int argc, char* argv[]) {
             break;
         }
         case 4: {
+            ShippingDriver::SelectShippingAPI(con);
             //Shipping
             break;
         }

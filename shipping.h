@@ -2,21 +2,29 @@
 #define SHIPPING_H
 
 #include <string>
+#include "SQLAPI/include/SQLAPI.h"
 
 /*
 Shipping API method declarations
 Author(s): 
 */
 class Shipping {
-        void CreateShippingMethod(std::string type, std::string courier);
+    public:
+        static void CreateShippingMethod(SAConnection& con,
+                                         const std::string& type,
+                                         const std::string& courier);
 
-        void UpdateShippingMethod(std::string type, std::string courier,
-                                  std::string update_field);
+        static void UpdateShippingMethod(SAConnection& con,
+                                         const std::string& type,
+                                         const std::string& courier,
+                                         const std::string& update_field,
+                                         const std::string& new_value);
 
-        void ListAllShippingMethods();
+        static void ListAllShippingMethods(SAConnection& con);
 
-        void ListPopularShippingMethods();
+        static void ListPopularShippingMethods(SAConnection& con);
 
-        void ListPopularShippingMethodsByRegion(std::string region);
+        static void ListPopularShippingMethodsByRegion(
+            SAConnection& con, const std::string&& region);
 };
 #endif
