@@ -1,5 +1,4 @@
 #include "customer.h"
-#include <algorithm>
 #include <iostream>
 #include "SQLAPI/include/SQLAPI.h"
 
@@ -14,9 +13,62 @@ void Customer::CreateCustomer(SAConnection& con, const std::string& name,
     insert.Execute();
 }
 
-void Customer::UpdateCustomer(SAConnection& con, std::string email,
-                              std::string change_field, std::string new_val) {}
+void Customer::UpdateCustomer(SAConnection& con, const std::string& email,
+                              const std::string& change_field,
+                              const std::string& new_val) {
 
-void Customer::ViewCustomer(SAConnection& con, std::string email) {}
+    //Get customer id
+    SACommand select(&con, _TSA("SELECT ID FROM CUSTOMER WHERE NAME = :1"));
+    select << _TSA(email.c_str());
+    select.Execute();
 
-void Customer::ListAllCustomers(SAConnection& con) {}
+    if (select.FetchNext()) {
+        int id = select.Field(1).asLong();
+
+        //Update record
+        // Step 3: Update the phone number
+        std::string command =
+            "UPDATE CUSTOMER SET " + change_field + "= :1 WHERE ID = :2";
+        SACommand update(&con, _TSA(command.c_str()));
+        update << _TSA(new_val.c_str()) << id;
+        update.Execute();
+    } else {
+        std::cerr << "Customer with email: " << email << " not found.\n";
+    }
+}
+
+void Customer::ViewCustomer(SAConnection& con, const std::string& email) {
+    SACommand select(&con, _TSA("SELECT * FROM CUSTOMER WHERE EMAIL = :1"));
+    select << _TSA(email.c_str());
+    select.Execute();
+
+    if (select.FetchNext()) {
+        //Select[1] is the id
+        SAString select_name = select[2].asString();
+        SAString select_email = select[3].asString();
+        SAString select_phone = select[4].asString();
+        std::cout << "Name: " << select_name.GetMultiByteChars() << "\n";
+        std::cout << "  Email: " << select_email.GetMultiByteChars() << "\n";
+        std::cout << "  Phone: " << select_phone.GetMultiByteChars() << "\n";
+    }
+}
+
+void Customer::ListAllCustomers(SAConnection& con) {
+    SACommand select(&con, _TSA("SELECT * FROM CUSTOMER"));
+    select.Execute();
+
+    SAString select_name;
+    SAString select_email;
+    SAString select_phone;
+    std::cout << "Showing " << select.RowsAffected() << " customers\n";
+    while (select.FetchNext()) {
+        //Select[1] is the id
+        select_name = select[2].asString();
+        select_email = select[3].asString();
+        select_phone = select[4].asString();
+        std::cout << "Name: " << select_name.GetMultiByteChars() << "\n";
+        std::cout << "  Email: " << select_email.GetMultiByteChars() << "\n";
+        std::cout << "  Phone: " << select_phone.GetMultiByteChars() << "\n";
+        std::cout << "\n";
+    }
+}

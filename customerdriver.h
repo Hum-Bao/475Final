@@ -7,7 +7,7 @@
 
 class CustomerDriver {
     public:
-        static void SelectCustomerAPI(const SAConnection& con);
+        static void SelectCustomerAPI(SAConnection& con);
 
     private:
         const static int NUM_METHODS = 5;

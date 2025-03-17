@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
 
     switch (option) {
         case 1: {
-            CustomerDriver::SelectCustomerAPI();
+            CustomerDriver::SelectCustomerAPI(con);
             break;
         }
         default: {

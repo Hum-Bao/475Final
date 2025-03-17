@@ -12,9 +12,9 @@ const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
                                 {5, "Exit"}}};
 
 const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
-    CustomerDriver::FIELDS = {{{1, "Name"}, {2, "Email"}, {3, "Phone"}}};
+    CustomerDriver::FIELDS = {{{1, "NAME"}, {2, "EMAIL"}, {3, "PHONE"}}};
 
-void CustomerDriver::SelectCustomerAPI(const SAConnection& con) {
+void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
     while (true) {
         std::cout << "Select API call: \n";
         for (const std::pair<int, std::string>& temp : METHODS) {
@@ -40,7 +40,7 @@ void CustomerDriver::SelectCustomerAPI(const SAConnection& con) {
 
                 std::cout << name << ", " << email << ", " << phone << "\n";
 
-                Customer::CreateCustomer(name, email, phone);
+                Customer::CreateCustomer(con, name, email, phone);
                 break;
             }
             case 2: {
@@ -66,7 +66,7 @@ void CustomerDriver::SelectCustomerAPI(const SAConnection& con) {
                 std::cout << email << ", " << change_field << ", " << new_val
                           << '\n';
 
-                Customer::UpdateCustomer(email, change_field, new_val);
+                Customer::UpdateCustomer(con, email, change_field, new_val);
                 break;
             }
             case 3: {
@@ -78,11 +78,11 @@ void CustomerDriver::SelectCustomerAPI(const SAConnection& con) {
 
                 std::cout << email << "\n";
 
-                Customer::ViewCustomer(email);
+                Customer::ViewCustomer(con, email);
                 break;
             }
             case 4: {
-                Customer::ListAllCustomers();
+                Customer::ListAllCustomers(con);
                 break;
             }
             case 5: {

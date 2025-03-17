@@ -14,11 +14,11 @@ class Customer {
                                    const std::string& email,
                                    const std::string& phone);
 
-        static void UpdateCustomer(SAConnection& con, std::string email,
-                                   std::string change_field,
-                                   std::string new_val);
+        static void UpdateCustomer(SAConnection& con, const std::string& email,
+                                   const std::string& change_field,
+                                   const std::string& new_val);
 
-        static void ViewCustomer(SAConnection& con, std::string email);
+        static void ViewCustomer(SAConnection& con, const std::string& email);
 
         static void ListAllCustomers(SAConnection& con);
 };
