@@ -1,19 +1,38 @@
 #include <stdio.h>
 #include <iostream>
+#include <map>
+#include "customer_driver.cpp"
 
 #include "SQLAPI/include/SQLAPI.h"
 
+const std::map<int, std::string> APIS = {{1, "Customer APIs"},
+                                         {2, "Transaction APIs"},
+                                         {3, "Facility APIs"},
+                                         {4, "Shipping APIs"},
+                                         {5, "Goods APIs"}};
+
 int main(int argc, char* argv[]) {
+    std::cout << "Select API category: \n";
+    for (std::pair temp : APIS) {
+        std::cout << temp.first << ". " << temp.second << "\n";
+    }
+    int option = 0;
+    std::cin >> option;
+
+    switch (option) {
+        case 1: {
+        }
+    }
+
+    return 0;
+
+    /*
     SAConnection con;
 
     try {
         con.Connect(_TSA("db02"), _TSA("postgres"), _TSA(""),
                     SA_PostgreSQL_Client);
         std::cout << "We are connected!" << "\n";
-
-        /*
-        The rest of the tutorial goes here!
-        */
 
         SACommand select(&con, _TSA("SELECT * FROM employee"));
 
@@ -46,7 +65,7 @@ int main(int argc, char* argv[]) {
                 "%s\n",
                 sID, sNum.GetMultiByteChars(), sName.GetMultiByteChars(),
                 sEmail.GetMultiByteChars(), sDID, sSalary.GetMultiByteChars());
-                */
+                
         }
 
         con.Disconnect();
@@ -55,6 +74,5 @@ int main(int argc, char* argv[]) {
         con.Rollback();
         printf("%s\n", x.ErrText().GetMultiByteChars());
     }
-
-    return 0;
+*/
 }
