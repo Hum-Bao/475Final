@@ -14,5 +14,5 @@ Build steps:
 Pushing commits:
 1. Git pull (to get updated files)
 2. Git add (name of file or . for all files)
-3. Git commit -m message
+3. Git commit -m "message"
 4. Git push
