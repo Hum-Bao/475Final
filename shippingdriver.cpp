@@ -8,7 +8,7 @@ const std::array<std::pair<int, std::string>, ShippingDriver::NUM_METHODS>
                                 {3, "ListAllShippingMethods"},
                                 {4, "ListPopularShippingMethods"},
                                 {5, "ListPopularShippingMethodsByRegion"},
-                                {6, "Exit"}}};
+                                {6, "Return"}}};
 
 const std::array<std::pair<int, std::string>, ShippingDriver::NUM_FIELDS>
     ShippingDriver::FIELDS = {{{1, "TYPE"}, {2, "NAME"}}};
@@ -65,22 +65,24 @@ void ShippingDriver::SelectShippingAPI(SAConnection& con) {
                 break;
             }
             case 3: {
-                std::string email;
-                std::cin.ignore();
-
-                std::cout << "Enter customer email: ";
-                std::getline(std::cin, email);
-
-                std::cout << email << "\n";
-
-                Customer::ViewCustomer(con, email);
+                Shipping::ListAllShippingMethods(con);
                 break;
             }
             case 4: {
-                Customer::ListAllCustomers(con);
+                Shipping::ListPopularShippingMethods(con);
                 break;
             }
             case 5: {
+                std::string region;
+
+                std::cout << "Enter region: ";
+                std::getline(std::cin, region);
+                std::cout << "\n";
+
+                Shipping::ListPopularShippingMethodsByRegion(con, region);
+                break;
+            }
+            case 6: {
                 return;
             }
             default: {

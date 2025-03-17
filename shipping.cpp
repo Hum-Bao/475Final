@@ -13,4 +13,4 @@ void Shipping::ListAllShippingMethods(SAConnection& con) {}
 void Shipping::ListPopularShippingMethods(SAConnection& con) {}
 
 void Shipping::ListPopularShippingMethodsByRegion(SAConnection& con,
-                                                  const std::string&& region) {}
+                                                  const std::string& region) {}

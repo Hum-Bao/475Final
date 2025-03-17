@@ -25,6 +25,6 @@ class Shipping {
         static void ListPopularShippingMethods(SAConnection& con);
 
         static void ListPopularShippingMethodsByRegion(
-            SAConnection& con, const std::string&& region);
+            SAConnection& con, const std::string& region);
 };
 #endif

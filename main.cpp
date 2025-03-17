@@ -6,13 +6,17 @@
 
 #include "SQLAPI/include/SQLAPI.h"
 
-const std::map<int, std::string> APIS = {{1, "Customer APIs"},
-                                         {2, "Transaction APIs"},
-                                         {3, "Facility APIs"},
-                                         {4, "Shipping APIs"},
-                                         {5, "Goods APIs"}};
+const int NUM_APIS = 6;
 
-int main(int argc, char* argv[]) {
+const std::array<std::pair<int, std::string>, NUM_APIS> APIS = {
+    {{1, "Customer APIs"},
+     {2, "Transaction APIs"},
+     {3, "Facility APIs"},
+     {4, "Shipping APIs"},
+     {5, "Goods APIs"},
+     {6, "Exit"}}};
+
+int main() {
 
     SAConnection con;
     try {
@@ -24,42 +28,50 @@ int main(int argc, char* argv[]) {
         printf("%s\n", x.ErrText().GetMultiByteChars());
     }
 
-    std::cout << "Select API category: \n";
-    for (std::pair<int, std::string> temp : APIS) {
-        std::cout << temp.first << ". " << temp.second << "\n";
-    }
-    int option = 0;
-    std::cin >> option;
+    while (true) {
 
-    switch (option) {
-        case 1: {
-            CustomerDriver::SelectCustomerAPI(con);
-            break;
+        std::cout << "Select API category: \n";
+        for (const std::pair<int, std::string>& temp : APIS) {
+            std::cout << temp.first << ". " << temp.second << "\n";
         }
-        case 2: {
-            //Transaction
-            break;
-        }
-        case 3: {
-            //Facility
-            break;
-        }
-        case 4: {
-            ShippingDriver::SelectShippingAPI(con);
-            //Shipping
-            break;
-        }
-        case 5: {
-            //Goods
-            break;
-        }
-        default: {
-            std::cout << "Not yet implemented\n";
-            break;
+        int option = 0;
+        std::cin >> option;
+
+        switch (option) {
+            case 1: {
+                CustomerDriver::SelectCustomerAPI(con);
+                break;
+            }
+            case 2: {
+                //Transaction
+                break;
+            }
+            case 3: {
+                //Facility
+                break;
+            }
+            case 4: {
+                ShippingDriver::SelectShippingAPI(con);
+                //Shipping
+                break;
+            }
+            case 5: {
+                //Goods
+                break;
+            }
+            case 6: {
+                //Exit
+                con.Disconnect();
+                return 0;
+            }
+            default: {
+                std::cout << "Not yet implemented\n";
+                break;
+            }
         }
     }
 
-    return 0;
+    return -1;
 
     /*
     SAConnection con;

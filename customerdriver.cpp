@@ -9,7 +9,7 @@ const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
                                 {2, "UpdateCustomer"},
                                 {3, "ViewCustomer"},
                                 {4, "ListAllCustomers"},
-                                {5, "Exit"}}};
+                                {5, "Return"}}};
 
 const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
     CustomerDriver::FIELDS = {{{1, "NAME"}, {2, "EMAIL"}, {3, "PHONE"}}};
