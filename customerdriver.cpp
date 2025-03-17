@@ -10,7 +10,7 @@ const std::array<std::pair<int, std::string>, 4> CustomerDriver::METHODS = {
 
 void CustomerDriver::SelectCustomerAPI() {
     std::cout << "Select API call: \n";
-    for (const std::pair temp : METHODS) {
+    for (const std::pair<int, std::string>& temp : METHODS) {
         std::cout << temp.first << ". " << temp.second << "\n";
     }
     int option = 0;

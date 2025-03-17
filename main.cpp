@@ -13,7 +13,7 @@ const std::map<int, std::string> APIS = {{1, "Customer APIs"},
 
 int main(int argc, char* argv[]) {
     std::cout << "Select API category: \n";
-    for (std::pair temp : APIS) {
+    for (std::pair<int, std::string> temp : APIS) {
         std::cout << temp.first << ". " << temp.second << "\n";
     }
     int option = 0;
