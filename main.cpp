@@ -35,6 +35,22 @@ int main(int argc, char* argv[]) {
             CustomerDriver::SelectCustomerAPI(con);
             break;
         }
+        case 2: {
+            //Transaction
+            break;
+        }
+        case 3: {
+            //Facility
+            break;
+        }
+        case 4: {
+            //Shipping
+            break;
+        }
+        case 5: {
+            //Goods
+            break;
+        }
         default: {
             std::cout << "Not yet implemented\n";
             break;

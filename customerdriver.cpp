@@ -4,17 +4,16 @@
 #include "SQLAPI/include/SQLAPI.h"
 #include "customer.h"
 
-const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
-    CustomerDriver::METHODS = {{{1, "CreateCustomer"},
-                                {2, "UpdateCustomer"},
-                                {3, "ViewCustomer"},
-                                {4, "ListAllCustomers"},
-                                {5, "Exit"}}};
-
-const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
-    CustomerDriver::FIELDS = {{{1, "NAME"}, {2, "EMAIL"}, {3, "PHONE"}}};
-
 void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
+    const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
+        METHODS = {{{1, "CreateCustomer"},
+                    {2, "UpdateCustomer"},
+                    {3, "ViewCustomer"},
+                    {4, "ListAllCustomers"},
+                    {5, "Exit"}}};
+
+    const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
+        FIELDS = {{{1, "NAME"}, {2, "EMAIL"}, {3, "PHONE"}}};
     while (true) {
         std::cout << "Select API call: \n";
         for (const std::pair<int, std::string>& temp : METHODS) {
