@@ -1,6 +1,7 @@
 #include "customerdriver.h"
 #include <iostream>
 #include <string>
+#include "SQLAPI/include/SQLAPI.h"
 #include "customer.h"
 
 const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
@@ -13,7 +14,7 @@ const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
 const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
     CustomerDriver::FIELDS = {{{1, "Name"}, {2, "Email"}, {3, "Phone"}}};
 
-void CustomerDriver::SelectCustomerAPI() {
+void CustomerDriver::SelectCustomerAPI(const SAConnection& con) {
     while (true) {
         std::cout << "Select API call: \n";
         for (const std::pair<int, std::string>& temp : METHODS) {
@@ -69,14 +70,26 @@ void CustomerDriver::SelectCustomerAPI() {
                 break;
             }
             case 3: {
+                std::string email;
+                std::cin.ignore();
+
+                std::cout << "Enter customer email: ";
+                std::getline(std::cin, email);
+
+                std::cout << email << "\n";
+
+                Customer::ViewCustomer(email);
+                break;
             }
             case 4: {
+                Customer::ListAllCustomers();
+                break;
             }
             case 5: {
                 return;
             }
             default: {
-                std::cout << "Unknown method: " << option << "\n";
+                std::cout << "Unknown method option: " << option << "\n";
                 break;
             }
         }

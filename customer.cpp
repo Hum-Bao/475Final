@@ -1,15 +1,22 @@
 #include "customer.h"
+#include <algorithm>
 #include <iostream>
+#include "SQLAPI/include/SQLAPI.h"
 
-void Customer::CreateCustomer(std::string name, std::string email,
-                              std::string phone) {
-    // std::cout << "Enter customer name: ";
-    // std:
+void Customer::CreateCustomer(SAConnection& con, const std::string& name,
+                              const std::string& email,
+                              const std::string& phone) {
+    SACommand insert(
+        &con,
+        _TSA("INSERT INTO CUSTOMER (NAME, EMAIL, PHONE) VALUES (:1, :2, :3)"));
+
+    insert << _TSA(name.c_str()) << _TSA(email.c_str()) << _TSA(phone.c_str());
+    insert.Execute();
 }
 
-void Customer::UpdateCustomer(std::string email, std::string change_field,
-                              std::string new_val) {}
+void Customer::UpdateCustomer(SAConnection& con, std::string email,
+                              std::string change_field, std::string new_val) {}
 
-void Customer::ViewCustomer(std::string email) {}
+void Customer::ViewCustomer(SAConnection& con, std::string email) {}
 
-void Customer::ListAllCustomers() {}
+void Customer::ListAllCustomers(SAConnection& con) {}

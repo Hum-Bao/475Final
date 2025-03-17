@@ -12,6 +12,17 @@ const std::map<int, std::string> APIS = {{1, "Customer APIs"},
                                          {5, "Goods APIs"}};
 
 int main(int argc, char* argv[]) {
+
+    SAConnection con;
+    try {
+        con.Connect(_TSA("baadb"), _TSA("postgres"), _TSA(""),
+                    SA_PostgreSQL_Client);
+        std::cout << "We are connected!" << "\n";
+    } catch (SAException& x) {
+        con.Rollback();
+        printf("%s\n", x.ErrText().GetMultiByteChars());
+    }
+
     std::cout << "Select API category: \n";
     for (std::pair<int, std::string> temp : APIS) {
         std::cout << temp.first << ". " << temp.second << "\n";

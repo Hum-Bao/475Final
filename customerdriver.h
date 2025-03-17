@@ -3,10 +3,11 @@
 
 #include <array>
 #include <string>
+#include "SQLAPI/include/SQLAPI.h"
 
 class CustomerDriver {
     public:
-        static void SelectCustomerAPI();
+        static void SelectCustomerAPI(const SAConnection& con);
 
     private:
         const static int NUM_METHODS = 5;
