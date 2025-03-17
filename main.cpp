@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <map>
-#include "customer_driver.cpp"
+#include "customerdriver.h"
 
 #include "SQLAPI/include/SQLAPI.h"
 
@@ -21,6 +21,12 @@ int main(int argc, char* argv[]) {
 
     switch (option) {
         case 1: {
+            CustomerDriver::SelectCustomerAPI();
+            break;
+        }
+        default: {
+            std::cout << "Not yet implemented\n";
+            break;
         }
     }
 
