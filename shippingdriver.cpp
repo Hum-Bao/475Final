@@ -21,6 +21,7 @@ void ShippingDriver::SelectShippingAPI(SAConnection& con) {
         }
         int option = 0;
         std::cin >> option;
+        std::cout << "\n";
         switch (option) {
             case 1: {
                 std::string type;
@@ -76,6 +77,7 @@ void ShippingDriver::SelectShippingAPI(SAConnection& con) {
                 std::string region;
 
                 std::cout << "Enter region: ";
+                std::cin.ignore();
                 std::getline(std::cin, region);
                 std::cout << "\n";
 

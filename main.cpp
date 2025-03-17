@@ -68,6 +68,7 @@ int main() {
                 break;
             }
         }
+        std::cout << "\n";
     }
 
     return -1;
