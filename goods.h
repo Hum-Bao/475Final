@@ -4,6 +4,11 @@
 #include <string>
 
 //Update this to include SKU and Category
+
+/*
+Goods API method declarations
+Author(s): 
+*/
 class Goods {
     public:
         void CreateGoods(std::string name, std::string description);

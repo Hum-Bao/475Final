@@ -3,6 +3,10 @@
 
 #include <string>
 
+/*
+Transaction API method declarations
+Author(s): 
+*/
 class Transaction {
     public:
         void CreateTransaction(char transaction_type,

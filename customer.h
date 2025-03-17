@@ -3,6 +3,10 @@
 
 #include <string>
 
+/*
+Customer API method declarations
+Author(s): 
+*/
 class Customer {
     public:
         std::string CreateCustomer(std::string name, std::string email,

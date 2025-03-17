@@ -3,6 +3,10 @@
 
 #include <string>
 
+/*
+Facility API method declarations
+Author(s): 
+*/
 class Facility {
     public:
         void CreateFacility(std::string name, std::string region);

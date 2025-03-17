@@ -3,6 +3,10 @@
 
 #include <string>
 
+/*
+Shipping API method declarations
+Author(s): 
+*/
 class Shipping {
         void CreateShippingMethod(std::string type, std::string courier);
 
