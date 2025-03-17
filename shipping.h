@@ -17,8 +17,8 @@ class Shipping {
         static void UpdateShippingMethod(SAConnection& con,
                                          const std::string& type,
                                          const std::string& courier,
-                                         const std::string& update_field,
-                                         const std::string& new_value);
+                                         const std::string& change_field,
+                                         const std::string& new_val);
 
         static void ListAllShippingMethods(SAConnection& con);
 

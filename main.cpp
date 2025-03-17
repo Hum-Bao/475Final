@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include <iostream>
-#include <map>
 #include "customerdriver.h"
 #include "shippingdriver.h"
 
@@ -25,7 +23,8 @@ int main() {
         std::cout << "We are connected!" << "\n";
     } catch (SAException& x) {
         con.Rollback();
-        printf("%s\n", x.ErrText().GetMultiByteChars());
+        std::cerr << x.ErrText().GetMultiByteChars() << "\n";
+        return -1;
     }
 
     while (true) {

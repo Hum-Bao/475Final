@@ -26,7 +26,6 @@ void Customer::UpdateCustomer(SAConnection& con, const std::string& email,
         int id = select.Field(1).asLong();
 
         //Update record
-        // Step 3: Update the phone number
         std::string command =
             "UPDATE CUSTOMER SET " + change_field + "= :1 WHERE ID = :2";
         SACommand update(&con, _TSA(command.c_str()));
