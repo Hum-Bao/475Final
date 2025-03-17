@@ -1,6 +1,6 @@
 # Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -I./SQLAPI/include
+CXXFLAGS = -std=c++14 -Wall -I./SQLAPI/include
 
 # Detect OS and Architecture
 UNAME_S := $(shell uname -s)
