@@ -1,5 +1,6 @@
 #include "shipping.h"
 #include <iostream>
+#include <map>
 
 void Shipping::CreateShippingMethod(SAConnection& con, const std::string& type,
                                     const std::string& courier) {
@@ -36,18 +37,43 @@ void Shipping::UpdateShippingMethod(SAConnection& con, const std::string& type,
 }
 
 void Shipping::ListAllShippingMethods(SAConnection& con) {
-    SACommand select(&con, _TSA("SELECT * FROM SHIPPING"));
-    select.Execute();
+    std::map<int, std::string> shipping_types = std::map<int, std::string>();
+    std::map<int, std::string> shipping_couriers = std::map<int, std::string>();
 
-    SAString select_type;
-    SAString select_courier;
-    std::cout << "Showing " << select.RowsAffected() << " shipping methods\n";
-    while (select.FetchNext()) {
+    std::cout << "Enter\n";
+
+    SACommand select_type(&con, _TSA("SELECT * FROM ShippingType"));
+    select_type.Execute();
+    while (select_type.FetchNext()) {
+        shipping_types[select_type[1].asLong()] = select_type[2].asString();
+    }
+
+    std::cout << "Finish types\n";
+
+    SACommand select_courier(&con, _TSA("SELECT * FROM ShippingCourier"));
+    select_courier.Execute();
+    while (select_courier.FetchNext()) {
+        shipping_couriers[select_courier[1].asLong()] =
+            select_courier[2].asString();
+    }
+
+    std::cout << "Finish couriers\n";
+
+    SACommand select_method(&con, _TSA("SELECT * FROM ShippingMethod"));
+    select_method.Execute();
+    std::cout << "finish methods\n";
+
+    int shipping_type = 0;
+    int shipping_courier = 0;
+    std::cout << "Showing " << select_method.RowsAffected()
+              << " shipping methods\n";
+    while (select_method.FetchNext()) {
         //Select[1] is the id
-        select_type = select[2].asString();
-        select_courier = select[3].asString();
-        std::cout << "Type: " << select_type.GetMultiByteChars() << "\n";
-        std::cout << "Courier: " << select_courier.GetMultiByteChars() << "\n";
+        shipping_type = select_method[2].asInt32();
+        shipping_courier = select_method[3].asInt32();
+
+        std::cout << "Type: " << shipping_types[shipping_type] << "\n";
+        std::cout << "Courier: " << shipping_couriers[shipping_courier] << "\n";
         std::cout << "\n";
     }
 }

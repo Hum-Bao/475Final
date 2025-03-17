@@ -9,20 +9,21 @@ BEGIN;
 
 CREATE TABLE ShippingType (
   ID SERIAL NOT NULL,
-  name TEXT NOT NULL,
+  name TEXT UNIQUE,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE ShippingCourier (
   ID SERIAL NOT NULL,
-  name TEXT NOT NULL,
+  name TEXT UNIQUE,
   PRIMARY KEY (ID)
 );
 
 CREATE TABLE ShippingMethod (
   ID SERIAL PRIMARY KEY,
-  typeID SERIAL,
-  courierID SERIAL,
+  typeID INTEGER,
+  courierID INTEGER,
+  CONSTRAINT unique_shipping_method UNIQUE (typeID, courierID),  -- Ensure uniqueness of typeID + courierID
   FOREIGN KEY (courierID) REFERENCES ShippingCourier(ID) Deferrable Initially Deferred,
   FOREIGN KEY (typeID) REFERENCES ShippingType(ID) Deferrable Initially Deferred
 );
@@ -121,8 +122,7 @@ INSERT INTO ShippingMethod (typeID, courierID) VALUES
 (3, 3),
 (4, 4),
 (5, 5),
-(6, 6),
-(1, 1);  -- Additional method using Ground & FedEx
+(6, 6);
 
 -- Adding Customers
 INSERT INTO Customer (name, email, phone) VALUES
@@ -204,7 +204,7 @@ INSERT INTO Transaction (transactionType, time, shippingID, facilityID, customer
 ('P', '2025-03-13 09:00:00', 4, 4, 4, 'TXN1004'),  
 ('R', '2025-03-13 10:30:00', 5, 5, 5, 'TXN1005'),  
 ('E', '2025-03-13 11:00:00', 6, 6, 6, 'TXN1006'),  
-('P', '2025-03-13 12:00:00', 7, 7, 7, 'TXN1007'),  
+('P', '2025-03-13 12:00:00', 1, 7, 7, 'TXN1007'),  
 ('R', '2025-03-13 13:30:00', 1, 1, 8, 'TXN1008');  
 
 -- Adding Transaction Details
