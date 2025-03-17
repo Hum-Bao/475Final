@@ -36,6 +36,9 @@
 *.idb
 *.pdb
 
+#Libraries
+*.dylib
+
 # Kernel Module Compile Results
 *.mod*
 *.cmd
