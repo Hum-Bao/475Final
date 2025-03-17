@@ -1,5 +1,6 @@
 #include "customerdriver.h"
 #include <iostream>
+#include <string>
 #include "customer.h"
 
 const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
@@ -8,6 +9,9 @@ const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
                                 {3, "ViewCustomer"},
                                 {4, "ListAllCustomers"},
                                 {5, "Exit"}}};
+
+const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
+    CustomerDriver::FIELDS = {{{1, "Name"}, {2, "Email"}, {3, "Phone"}}};
 
 void CustomerDriver::SelectCustomerAPI() {
     while (true) {
@@ -39,6 +43,30 @@ void CustomerDriver::SelectCustomerAPI() {
                 break;
             }
             case 2: {
+                std::string email;
+                std::string change_field;
+                std::string new_val;
+                std::cin.ignore();
+
+                std::cout << "Enter customer email: ";
+                std::getline(std::cin, email);
+
+                std::cout << "Select field to update: \n";
+                for (const std::pair<int, std::string>& temp : FIELDS) {
+                    std::cout << temp.first << ". " << temp.second << "\n";
+                }
+                std::string option;
+                std::getline(std::cin, option);
+                change_field = FIELDS[stoi(option) - 1].second;
+
+                std::cout << "\nEnter new value: ";
+                std::getline(std::cin, new_val);
+
+                std::cout << email << ", " << change_field << ", " << new_val
+                          << '\n';
+
+                Customer::UpdateCustomer(email, change_field, new_val);
+                break;
             }
             case 3: {
             }
@@ -52,5 +80,6 @@ void CustomerDriver::SelectCustomerAPI() {
                 break;
             }
         }
+        std::cout << "\n";
     }
 }
