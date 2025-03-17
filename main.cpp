@@ -57,7 +57,6 @@ int main(int argc, char* argv[]) {
             }
             std::cout << "\n\n";
 
-            /*
             //Hardcoded
             int sID = select[1].asInt32();
             SAString sNum = select[2].asString();

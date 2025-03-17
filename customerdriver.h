@@ -9,7 +9,9 @@ class CustomerDriver {
         static void SelectCustomerAPI();
 
     private:
-        const static std::array<std::pair<int, std::string>, 4> METHODS;
+        const static int NUM_METHODS = 5;
+        const static std::array<std::pair<int, std::string>, NUM_METHODS>
+            METHODS;
 };
 
 #endif
