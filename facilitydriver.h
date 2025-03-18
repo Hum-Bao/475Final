@@ -7,7 +7,7 @@
 
 class FacilityDriver {
     public:
-        static void SelectGoodsAPI(SAConnection& con);
+        static void SelectFacilityAPI(SAConnection& con);
 
     private:
         const static int NUM_METHODS = 3;
