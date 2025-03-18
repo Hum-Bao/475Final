@@ -1,77 +1,77 @@
-#include "facilitydriver.h"
+#include "FacilityDriver.h"
 #include <iostream>
 #include <string>
 #include "facility.h"
 
-const std::array<std::pair<int, std::string>, FacilityDriver::NUM_METHODS>
-    GoodsDriver::METHODS = {{{1, "CreateFacility"},
-                             {2, "UpdateFacility"},
-                             {3, "SearchGoods"}}};
+const std::array<std::pair<int, std::string>, FacilityDriver::NUM_METHODS> FacilityDriver::METHODS = {
+                                                        {{1, "CreateFacility"},
+                                                        {2, "UpdateFacility"},
+                                                        {3, "ListAllFacilities"},
+                                                        {4, "Return"}}};
 
-const std::array<std::pair<int, std::string>,FacilityDriver::NUM_FIELDS>
-    FacilityDriver::FIELDS = {
-        {{1, "NAME"}, {2, "REIGON"}}};
+const std::array<std::pair<int, std::string>, FacilityDriver::NUM_FIELDS> FacilityDriver::FIELDS = {
+    {{1, "NAME"}, {2, "REGION"}}};
 
-void FacilityDriver::SelectGoodsAPI(SAConnection& con) {
+void FacilityDriver::SelectFacilityAPI(SAConnection& con) {
     while (true) {
         std::cout << "Select API call: \n";
-        for (const std::pair<int, std::string>& temp : METHODS) {
-            std::cout << temp.first << ". " << temp.second << "\n";
+        for (const std::pair<int, std::string>& method : METHODS) {
+            std::cout << method.first << ". " << method.second << "\n";
         }
+
         int option = 0;
         std::cin >> option;
         std::cout << "\n";
+
         switch (option) {
             case 1: {
-                std::string name;
-                std::string description;
-                std::string SKU;
-                std::string category;
+                std::string name, region;
                 std::cin.ignore();
 
-                std::cout << "Enter goods name: ";
+                std::cout << "Enter facility name: ";
                 std::getline(std::cin, name);
 
-                std::cout << "\nEnter goods description: ";
-                std::getline(std::cin, description);
+                std::cout << "Enter region: ";
+                std::getline(std::cin, region);
 
-                std::cout << "\nEnter goods SKU: ";
-                std::getline(std::cin, SKU);
-
-                std::cout << "\nEnter goods category ";
-                std::getline(std::cin, category);
-
-                Goods::CreateGoods(con, name, description, SKU, category);
+                Facility::CreateFacility(name, region);
                 break;
             }
             case 2: {
-                std::string SKU;
-                std::string change_field;
-                std::string new_val;
+                std::string name, update_field, new_value;
                 std::cin.ignore();
 
-                std::cout << "Enter goods SKU: ";
-                std::getline(std::cin, SKU);
+                std::cout << "Enter facility name: ";
+                std::getline(std::cin, name);
 
                 std::cout << "Select field to update: \n";
-                for (const std::pair<int, std::string>& temp : FIELDS) {
-                    std::cout << temp.first << ". " << temp.second << "\n";
+                for (const std::pair<int, std::string>& field : FIELDS) {
+                    std::cout << field.first << ". " << field.second << "\n";
                 }
-                std::string option;
-                std::getline(std::cin, option);
-                change_field = FIELDS[stoi(option) - 1].second;
 
-                std::cout << "\nEnter new value: ";
-                std::getline(std::cin, new_val);
+                int field_option;
+                std::cin >> field_option;
 
-                Goods::UpdateGoods(con, SKU, change_field, new_val);
+                update_field = FIELDS[field_option - 1].second;
+
+                std::cout << "Enter new value for " << update_field << ": ";
+                std::cin.ignore();
+                std::getline(std::cin, new_value);
+
+                Facility::UpdateFacility(name, update_field + "=" + new_value);
                 break;
             }
             case 3: {
-                Goods::ListAllGoods(con);
+                Facility::ListAllFacilities();
                 break;
             }
-
+            case 4: {
+                return;
+            }
+            default: {
+                std::cout << "Unknown method option: " << option << "\n";
+                break;
+            }
         }
         std::cout << "\n";
     }
