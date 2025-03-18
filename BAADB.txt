@@ -69,7 +69,7 @@ CREATE TABLE Transaction (
 
 CREATE TABLE GoodCategory (
   ID SERIAL NOT NULL,
-  name TEXT NOT NULL,
+  name TEXT UNIQUE NOT NULL,
   PRIMARY KEY (ID)
 );
 

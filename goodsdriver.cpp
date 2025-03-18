@@ -1,5 +1,7 @@
 #include "goodsdriver.h"
 #include <iostream>
+#include <string>
+#include "goods.h"
 
 const std::array<std::pair<int, std::string>, GoodsDriver::NUM_METHODS>
     GoodsDriver::METHODS = {{{1, "CreateGoods"},
@@ -8,9 +10,10 @@ const std::array<std::pair<int, std::string>, GoodsDriver::NUM_METHODS>
                              {4, "ListAllGoods"},
                              {5, "GetGoodsVolumeByDate"},
                              {6, "GetTotalGoodsVolume"},
-                             {7, "ListAllGoodsCategories"},
-                             {8, "GetGoodsWeightByCategory"},
-                             {9, "Return"}}};
+                             {7, "CreateGoodsCategory"},
+                             {8, "ListAllGoodsCategories"},
+                             {9, "GetGoodsWeightByCategory"},
+                             {10, "Return"}}};
 
 const std::array<std::pair<int, std::string>, GoodsDriver::NUM_FIELDS>
     GoodsDriver::FIELDS = {
@@ -27,31 +30,35 @@ void GoodsDriver::SelectGoodsAPI(SAConnection& con) {
         std::cout << "\n";
         switch (option) {
             case 1: {
-                std::string type;
-                std::string courier;
+                std::string name;
+                std::string description;
+                std::string SKU;
+                std::string category;
                 std::cin.ignore();
 
-                std::cout << "Enter shipping type: ";
-                std::getline(std::cin, type);
+                std::cout << "Enter goods name: ";
+                std::getline(std::cin, name);
 
-                std::cout << "\nEnter shipping courier: ";
-                std::getline(std::cin, courier);
+                std::cout << "\nEnter goods description: ";
+                std::getline(std::cin, description);
 
-                Shipping::CreateShippingMethod(con, type, courier);
+                std::cout << "\nEnter goods SKU: ";
+                std::getline(std::cin, SKU);
+
+                std::cout << "\nEnter goods category ";
+                std::getline(std::cin, category);
+
+                Goods::CreateGoods(con, name, description, SKU, category);
                 break;
             }
             case 2: {
-                std::string type;
-                std::string courier;
+                std::string SKU;
                 std::string change_field;
                 std::string new_val;
                 std::cin.ignore();
 
-                std::cout << "Enter shipping type: ";
-                std::getline(std::cin, type);
-
-                std::cout << "\nEnter shipping courier: ";
-                std::getline(std::cin, courier);
+                std::cout << "Enter goods SKU: ";
+                std::getline(std::cin, SKU);
 
                 std::cout << "Select field to update: \n";
                 for (const std::pair<int, std::string>& temp : FIELDS) {
@@ -64,30 +71,69 @@ void GoodsDriver::SelectGoodsAPI(SAConnection& con) {
                 std::cout << "\nEnter new value: ";
                 std::getline(std::cin, new_val);
 
-                Shipping::UpdateShippingMethod(con, type, courier, change_field,
-                                               new_val);
+                Goods::UpdateGoods(con, SKU, change_field, new_val);
                 break;
             }
             case 3: {
-                Shipping::ListAllShippingMethods(con);
+                std::string name;
+                std::cin.ignore();
+
+                std::cout << "Enter goods name: ";
+                std::getline(std::cin, name);
+                std::cout << "\n";
+                Goods::SearchGoods(con, name);
                 break;
             }
             case 4: {
-                Shipping::ListPopularShippingMethods(con);
+                Goods::ListAllGoods(con);
                 break;
             }
             case 5: {
-                std::string region;
-
-                std::cout << "Enter region: ";
+                std::string start_date;
+                std::string end_date;
                 std::cin.ignore();
-                std::getline(std::cin, region);
+
+                std::cout << "Enter start date: ";
+                std::getline(std::cin, start_date);
+
+                std::cout << "\nEnter end date: ";
+                std::getline(std::cin, end_date);
                 std::cout << "\n";
 
-                Shipping::ListPopularShippingMethodsByRegion(con, region);
+                Goods::GetGoodsVolumeByDate(con, start_date, end_date);
                 break;
             }
             case 6: {
+                Goods::GetTotalGoodsVolume(con);
+                break;
+            }
+            case 7: {
+                std::string name;
+                std::cin.ignore();
+
+                std::cout << "Enter category name: ";
+                std::getline(std::cin, name);
+                std::cout << "\n";
+
+                Goods::CreateGoodsCategory(con, name);
+                break;
+            }
+            case 8: {
+                Goods::ListAllGoodsCategories(con);
+                break;
+            }
+            case 9: {
+                std::string name;
+                std::cin.ignore();
+
+                std::cout << "Enter category name: ";
+                std::getline(std::cin, name);
+                std::cout << "\n";
+
+                Goods::GetGoodsWeightByCategory(con, name);
+                break;
+            }
+            case 10: {
                 return;
             }
             default: {

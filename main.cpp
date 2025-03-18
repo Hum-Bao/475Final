@@ -1,5 +1,6 @@
 #include <iostream>
 #include "customerdriver.h"
+#include "goodsdriver.h"
 #include "shippingdriver.h"
 
 #include "SQLAPI/include/SQLAPI.h"
@@ -55,7 +56,7 @@ int main() {
                 break;
             }
             case 5: {
-                //Goods
+                GoodsDriver::SelectGoodsAPI(con);
                 break;
             }
             case 6: {

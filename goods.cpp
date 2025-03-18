@@ -18,6 +18,8 @@ void Goods::GetGoodsVolumeByDate(SAConnection& con,
 
 void Goods::GetTotalGoodsVolume(SAConnection& con) {}
 
+void Goods::CreateGoodsCategory(SAConnection& con, const std::string& name) {}
+
 void Goods::ListAllGoodsCategories(SAConnection& con) {}
 
 void Goods::GetGoodsWeightByCategory(SAConnection& con,

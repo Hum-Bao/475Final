@@ -10,27 +10,31 @@ Author(s):
 */
 class Goods {
     public:
-        void CreateGoods(SAConnection& con, const std::string& name,
-                         const std::string& description, const std::string& SKU,
-                         const std::string& category);
+        static void CreateGoods(SAConnection& con, const std::string& name,
+                                const std::string& description,
+                                const std::string& SKU,
+                                const std::string& category);
 
-        void UpdateGoods(SAConnection& con, const std::string& SKU,
-                         const std::string& change_field,
-                         const std::string& new_val);
+        static void UpdateGoods(SAConnection& con, const std::string& SKU,
+                                const std::string& change_field,
+                                const std::string& new_val);
 
-        void SearchGoods(SAConnection& con, const std::string& name);
+        static void SearchGoods(SAConnection& con, const std::string& name);
 
-        void ListAllGoods(SAConnection& con);
+        static void ListAllGoods(SAConnection& con);
 
-        void GetGoodsVolumeByDate(SAConnection& con,
-                                  const std::string& start_date,
-                                  const std::string& end_date);
+        static void GetGoodsVolumeByDate(SAConnection& con,
+                                         const std::string& start_date,
+                                         const std::string& end_date);
 
-        void GetTotalGoodsVolume(SAConnection& con);
+        static void GetTotalGoodsVolume(SAConnection& con);
 
-        void ListAllGoodsCategories(SAConnection& con);
+        static void CreateGoodsCategory(SAConnection& con,
+                                        const std::string& name);
 
-        void GetGoodsWeightByCategory(SAConnection& con,
-                                      const std::string& category);
+        static void ListAllGoodsCategories(SAConnection& con);
+
+        static void GetGoodsWeightByCategory(SAConnection& con,
+                                             const std::string& category);
 };
 #endif
