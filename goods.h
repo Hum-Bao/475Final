@@ -17,7 +17,7 @@ class Goods {
 
         static void UpdateGoods(SAConnection& con, const std::string& SKU,
                                 const std::string& change_field,
-                                const std::string& new_val);
+                                std::string new_val);
 
         static void SearchGoods(SAConnection& con, const std::string& name);
 

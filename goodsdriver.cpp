@@ -67,6 +67,9 @@ void GoodsDriver::SelectGoodsAPI(SAConnection& con) {
                 std::string option;
                 std::getline(std::cin, option);
                 change_field = FIELDS[stoi(option) - 1].second;
+                if (change_field == "CATEGORY") {
+                    change_field += "ID";
+                }
 
                 std::cout << "\nEnter new value: ";
                 std::getline(std::cin, new_val);
