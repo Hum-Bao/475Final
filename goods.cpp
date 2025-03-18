@@ -1,12 +1,14 @@
 #include "goods.h"
 #include <cstring>
 #include <iostream>
+#include <map>
 #include <string>
+#include "SQLAPI/include/SQLAPI.h"
 
 void Goods::CreateGoods(SAConnection& con, const std::string& name,
                         const std::string& description, const std::string& SKU,
                         const std::string& category) {
-    SACommand insert(&con, _TSA("INSERT INTO GOOD (NAME, DESCRIPTION, SKU, "
+    SACommand insert(&con, _TSA("INSERT INTO Good (NAME, DESCRIPTION, SKU, "
                                 "CATEGORYID) VALUES (:1, :2, :3, :4)"));
 
     insert << _TSA(name.c_str()) << _TSA(description.c_str())
@@ -64,9 +66,71 @@ void Goods::UpdateGoods(SAConnection& con, const std::string& SKU,
     }
 }
 
-void Goods::SearchGoods(SAConnection& con, const std::string& name) {}
+void Goods::SearchGoods(SAConnection& con, const std::string& name) {
+    std::string command =
+        "SELECT * FROM Good WHERE name ILIKE '%" + name + "%'";
+    SACommand search(&con, _TSA(command.c_str()));
+    search.Execute();
+    std::cout << "Showing " << search.RowsAffected() << " goods:\n";
+    if (search.RowsAffected() != 0) {
+        std::map<int, std::string> categories = std::map<int, std::string>();
+        SACommand select_categories(&con, _TSA("SELECT * FROM GoodCategory"));
+        select_categories.Execute();
 
-void Goods::ListAllGoods(SAConnection& con) {}
+        while (select_categories.FetchNext()) {
+            categories[select_categories[1].asInt32()] =
+                select_categories[2].asString();
+        }
+
+        SAString select_name;
+        SAString select_description;
+        SAString select_SKU;
+        while (search.FetchNext()) {
+            //Select[1] is the id
+            select_name = search[2].asString();
+            select_description = search[3].asString();
+            select_SKU = search[4].asString();
+            std::cout << "Name: " << select_name.GetMultiByteChars() << "\n";
+            std::cout << "  Description: "
+                      << select_description.GetMultiByteChars() << "\n";
+            std::cout << "  SKU: " << select_SKU.GetMultiByteChars() << "\n";
+            std::cout << "  Category: " << categories[search[5].asInt32()];
+            std::cout << "\n";
+        }
+    }
+}
+
+void Goods::ListAllGoods(SAConnection& con) {
+    std::map<int, std::string> categories = std::map<int, std::string>();
+
+    SACommand select_categories(&con, _TSA("SELECT * FROM GoodCategory"));
+    select_categories.Execute();
+
+    while (select_categories.FetchNext()) {
+        categories[select_categories[1].asInt32()] =
+            select_categories[2].asString();
+    }
+
+    SACommand select(&con, _TSA("SELECT * FROM Good"));
+    select.Execute();
+
+    SAString select_name;
+    SAString select_description;
+    SAString select_SKU;
+    std::cout << "Showing " << select.RowsAffected() << " goods\n";
+    while (select.FetchNext()) {
+        //Select[1] is the id
+        select_name = select[2].asString();
+        select_description = select[3].asString();
+        select_SKU = select[4].asString();
+        std::cout << "Name: " << select_name.GetMultiByteChars() << "\n";
+        std::cout << "  Description: " << select_description.GetMultiByteChars()
+                  << "\n";
+        std::cout << "  SKU: " << select_SKU.GetMultiByteChars() << "\n";
+        std::cout << "  Category: " << categories[select[5].asInt32()];
+        std::cout << "\n";
+    }
+}
 
 void Goods::GetGoodsVolumeByDate(SAConnection& con,
                                  const std::string& start_date,
@@ -74,7 +138,23 @@ void Goods::GetGoodsVolumeByDate(SAConnection& con,
 
 void Goods::GetTotalGoodsVolume(SAConnection& con) {}
 
-void Goods::CreateGoodsCategory(SAConnection& con, const std::string& name) {}
+void Goods::CreateGoodsCategory(SAConnection& con, const std::string& name) {
+    SACommand insert(&con, _TSA("INSERT INTO GoodCategory (NAME) VALUES (:1)"));
+    insert << _TSA(name.c_str());
+    try {
+        insert.Execute();
+    } catch (SAException& e) {
+        std::string error_message = e.ErrText().GetMultiByteChars();
+        if (error_message.find("already exists") != std::string::npos) {
+            std::cerr << "Category: " << name
+                      << " not added as it already exists.\n";
+        } else {
+            std::cerr << "Unknown error occurred while attempting to add new "
+                         "category: "
+                      << name << "\n";
+        }
+    }
+}
 
 void Goods::ListAllGoodsCategories(SAConnection& con) {}
 
