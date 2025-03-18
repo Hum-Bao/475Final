@@ -136,7 +136,12 @@ void Goods::GetGoodsVolumeByDate(SAConnection& con,
                                  const std::string& start_date,
                                  const std::string& end_date) {}
 
-void Goods::GetTotalGoodsVolume(SAConnection& con) {}
+// WHY DOESN'T THIS WORK?????????
+void Goods::GetTotalGoodsVolume(SAConnection& con) {
+    SACommand select(&con, "SELECT SUM(quantity) FROM TransactionDetail");
+    select.Execute();
+    std::cout << select[1].asInt32() << " units of goods shipped total\n";
+}
 
 void Goods::CreateGoodsCategory(SAConnection& con, const std::string& name) {
     SACommand insert(&con, _TSA("INSERT INTO GoodCategory (NAME) VALUES (:1)"));
