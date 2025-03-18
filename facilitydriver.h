@@ -5,7 +5,7 @@
 #include <string>
 #include "SQLAPI/include/SQLAPI.h"
 
-class TransactionDriver {
+class FacilityDriver {
     public:
         static void SelectGoodsAPI(SAConnection& con);
 
