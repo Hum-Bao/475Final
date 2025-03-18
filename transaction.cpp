@@ -50,7 +50,29 @@ SACommand insert(
 }
 
 void Transaction::GetTransactionByCustomer(std::string customer_email) {
-    SACommand select(&con, _TSA("SELECT * FROM TRANSACTION WHERE customer.email = :1"));
+    std::string query = 
+        "SELECT "
+        "Transaction.transactionNum, "
+        "Transaction.transactionType, "
+        "Transaction.time AS transactionTime, "
+        "Facility.name AS facilityName, "
+        "Region.name AS facilityRegion, "
+        "Good.name AS goodsName, "
+        "TransactionDetail.quantity AS goodsQuantity, "
+        "ShippingMethod.typeID AS shippingMethod, "
+        "ShippingCourier.name AS shippingCourier "
+        "FROM "
+        "Transaction "
+        "JOIN Customer ON Transaction.customerID = Customer.ID "
+        "JOIN ShippingMethod ON Transaction.shippingID = ShippingMethod.ID "
+        "JOIN ShippingCourier ON ShippingMethod.courierID = ShippingCourier.ID "
+        "JOIN Facility ON Transaction.facilityID = Facility.ID "
+        "JOIN Region ON Facility.regionID = Region.ID "
+        "JOIN TransactionDetail ON Transaction.ID = TransactionDetail.transactionID "
+        "JOIN Good ON TransactionDetail.goodID = Good.ID "
+        "WHERE Customer.email = :1 "
+        "ORDER BY Transaction.time;";
+    SACommand select(&con, query.c_str());
     select << _TSA(customer_email.c_str());
       select.Execute();
 
@@ -89,7 +111,28 @@ void Transaction::GetTransactionByCustomer(std::string customer_email) {
 }
 
 void Transaction::GetTransactionByFacility(std::string facility_name) {
-ACommand select(&con, _TSA("SELECT * FROM TRANSACTION WHERE facility.name = :1"));
+    std::string query = 
+        "SELECT "
+        "Transaction.transactionNum, "
+        "Transaction.transactionType, "
+        "Transaction.time AS transactionTime, "
+        "Facility.name AS facilityName, "
+        "Region.name AS facilityRegion, "
+        "Good.name AS goodsName, "
+        "TransactionDetail.quantity AS goodsQuantity, "
+        "ShippingMethod.typeID AS shippingMethod, "
+        "ShippingCourier.name AS shippingCourier "
+        "FROM "
+        "Transaction "
+        "JOIN Facility ON Transaction.facilityID = Facility.ID "
+        "JOIN Region ON Facility.regionID = Region.ID "
+        "JOIN ShippingMethod ON Transaction.shippingID = ShippingMethod.ID "
+        "JOIN ShippingCourier ON ShippingMethod.courierID = ShippingCourier.ID "
+        "JOIN TransactionDetail ON Transaction.ID = TransactionDetail.transactionID "
+        "JOIN Good ON TransactionDetail.goodID = Good.ID "
+        "WHERE Facility.name = :1 "
+        "ORDER BY Transaction.time;";
+    SACommand select(&con, query.c_str());
     select << _TSA(facility_name.c_str());
       select.Execute();
 
@@ -130,7 +173,28 @@ ACommand select(&con, _TSA("SELECT * FROM TRANSACTION WHERE facility.name = :1")
 //Maybe use std::time or ctime instead of string?
 void Transaction::GetTransactionByDateRange(std::string start_date,
                                             std::string end_date) {
-    ACommand select(&con, _TSA("SELECT * FROM TRANSACTION WHERE facility.name = :1"));
+      std::string query = 
+        "SELECT "
+        "Transaction.transactionNum, "
+        "Transaction.transactionType, "
+        "Transaction.time AS transactionTime, "
+        "Facility.name AS facilityName, "
+        "Region.name AS facilityRegion, "
+        "Good.name AS goodsName, "
+        "TransactionDetail.quantity AS goodsQuantity, "
+        "ShippingMethod.typeID AS shippingMethod, "
+        "ShippingCourier.name AS shippingCourier "
+        "FROM "
+        "Transaction "
+        "JOIN ShippingMethod ON Transaction.shippingID = ShippingMethod.ID "
+        "JOIN ShippingCourier ON ShippingMethod.courierID = ShippingCourier.ID "
+        "JOIN Facility ON Transaction.facilityID = Facility.ID "
+        "JOIN Region ON Facility.regionID = Region.ID "
+        "JOIN TransactionDetail ON Transaction.ID = TransactionDetail.transactionID "
+        "JOIN Good ON TransactionDetail.goodID = Good.ID "
+        "WHERE Transaction.time BETWEEN :1 AND :2 "
+        "ORDER BY Transaction.time;";
+    SACommand select(&con, query.c_str());
     select << _TSA(facility_name.c_str());
       select.Execute();
 
