@@ -156,7 +156,17 @@ void Goods::CreateGoodsCategory(SAConnection& con, const std::string& name) {
     }
 }
 
-void Goods::ListAllGoodsCategories(SAConnection& con) {}
+void Goods::ListAllGoodsCategories(SAConnection& con) {
+    SACommand select_categories(&con, _TSA("SELECT * FROM GoodCategory"));
+    select_categories.Execute();
+
+    std::cout << "Showing " << select_categories.RowsAffected()
+              << " categories:\n";
+    while (select_categories.FetchNext()) {
+        std::cout << select_categories[2].asString().GetMultiByteChars()
+                  << "\n";
+    }
+}
 
 void Goods::GetGoodsWeightByCategory(SAConnection& con,
                                      const std::string& category) {}
