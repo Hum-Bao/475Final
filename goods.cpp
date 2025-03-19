@@ -134,9 +134,20 @@ void Goods::ListAllGoods(SAConnection& con) {
 
 void Goods::GetGoodsVolumeByDate(SAConnection& con,
                                  const std::string& start_date,
-                                 const std::string& end_date) {}
+                                 const std::string& end_date) {
+    std::string command = "SELECT SUM(quantity) FROM TransactionDetail ";
+    command +=
+        "JOIN Transaction ON TransactionDetail.transactionid = Transaction.id ";
+    command += "WHERE Transaction.time BETWEEN '" + start_date + "' AND '" +
+               end_date + "'::DATE + INTERVAL '1 DAY'";
+    SACommand select(&con, command.c_str());
+    select.Execute();
+    if (select.FetchNext()) {
+        std::cout << select[1].asInt32() << " units of goods shipped between "
+                  << start_date << " and " << end_date << "\n";
+    }
+}
 
-// WHY DOESN'T THIS WORK?????????
 void Goods::GetTotalGoodsVolume(SAConnection& con) {
     SACommand select(&con, "SELECT SUM(quantity) FROM TransactionDetail");
     select.Execute();
@@ -176,4 +187,30 @@ void Goods::ListAllGoodsCategories(SAConnection& con) {
 }
 
 void Goods::GetGoodsWeightByCategory(SAConnection& con,
-                                     const std::string& category) {}
+                                     const std::string& category) {
+
+    std::map<std::string, int> categories = std::map<std::string, int>();
+
+    SACommand select_categories(&con, _TSA("SELECT * FROM GoodCategory"));
+    select_categories.Execute();
+
+    while (select_categories.FetchNext()) {
+        categories[select_categories[2].asString().GetMultiByteChars()] =
+            select_categories[1].asInt32();
+    }
+
+    std::string command =
+        "SELECT SUM(TransactionDetail.weight) FROM TransactionDetail ";
+    command += "JOIN Good ON TransactionDetail.goodid = Good.id ";
+    command += "JOIN GoodCategory ON Good.categoryID = GoodCategory.id ";
+    command += "WHERE GoodCategory.id = '" +
+               std::to_string(categories[category]) + "'";
+
+    SACommand select(&con, _TSA(command.c_str()));
+    select.Execute();
+
+    if (select.FetchNext()) {
+        std::cout << select[1].asDouble() << "kgs of " << category
+                  << " shipped total\n";
+    }
+}

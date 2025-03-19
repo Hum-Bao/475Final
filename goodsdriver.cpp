@@ -96,10 +96,10 @@ void GoodsDriver::SelectGoodsAPI(SAConnection& con) {
                 std::string end_date;
                 std::cin.ignore();
 
-                std::cout << "Enter start date: ";
+                std::cout << "Enter start date (YYYY-MM-DD): ";
                 std::getline(std::cin, start_date);
 
-                std::cout << "\nEnter end date: ";
+                std::cout << "\nEnter end date (YYYY-MM-DD): ";
                 std::getline(std::cin, end_date);
                 std::cout << "\n";
 
