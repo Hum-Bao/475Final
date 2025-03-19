@@ -2,6 +2,7 @@
 #define FACILITY_H
 
 #include <string>
+#include "SQLAPI/include/SQLAPI.h"
 
 /*
 Facility API method declarations
@@ -9,10 +10,13 @@ Author(s):
 */
 class Facility {
     public:
-        void CreateFacility(std::string name, std::string region);
+        static void CreateFacility(SAConnection& con, const std::string& name,
+                                   const std::string& region);
 
-        void UpdateFacility(std::string name, std::string update_field);
+        static void UpdateFacility(SAConnection& con, const std::string& name,
+                                   const std::string& update_field,
+                                   const std::string& new_val);
 
-        void ListAllFacilities();
+        static void ListAllFacilities(SAConnection& con);
 };
 #endif
