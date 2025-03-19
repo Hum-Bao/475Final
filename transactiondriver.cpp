@@ -35,8 +35,9 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::string facility_name;
                 std::string shipping_method_type;
                 std::string shipping_courier;
-                std::string goods_name;
+                std::string goods_SKU;
                 std::string goods_quantity;
+                std::string goods_weight;
                 std::cin.ignore();
 
                 std::cout << "Enter transaction type: ";
@@ -55,16 +56,20 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::cout << "\nEnter shipping courier: ";
                 std::getline(std::cin, shipping_courier);
 
-                std::cout << "\nEnter goods name: ";
-                std::getline(std::cin, goods_name);
+                std::cout << "\nEnter goods SKU: ";
+                std::getline(std::cin, goods_SKU);
 
                 std::cout << "\nEnter goods quantity: ";
                 std::getline(std::cin, goods_quantity);
 
+                std::cout << "\nEnter goods weight: ";
+                std::getline(std::cin, goods_weight);
+                std::cout << "\n";
+
                 Transaction::CreateTransaction(
                     con, transaction_type, customer_email, facility_name,
-                    shipping_method_type, shipping_courier, goods_name,
-                    goods_quantity);
+                    shipping_method_type, shipping_courier, goods_SKU,
+                    goods_quantity, goods_weight);
                 break;
             }
             case 2: {
@@ -72,8 +77,10 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::cin.ignore();
                 std::cout << "Enter customer email: ";
                 std::getline(std::cin, customer_email);
+                std::cout << "\n";
 
                 Transaction::GetTransactionByCustomer(con, customer_email);
+
                 break;
             }
             case 3: {
@@ -81,12 +88,14 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::cin.ignore();
                 std::cout << "Enter facility name: ";
                 std::getline(std::cin, facility_name);
+                std::cout << "\n";
 
                 Transaction::GetTransactionByFacility(con, facility_name);
                 break;
             }
             case 4: {
-                std::string start_date, end_date;
+                std::string start_date;
+                std::string end_date;
                 std::cin.ignore();
 
                 std::cout << "Enter start date (YYYY-MM-DD): ";
@@ -94,6 +103,7 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
 
                 std::cout << "Enter end date (YYYY-MM-DD): ";
                 std::getline(std::cin, end_date);
+                std::cout << "\n";
 
                 Transaction::GetTransactionByDateRange(con, start_date,
                                                        end_date);

@@ -10,14 +10,12 @@ Author(s):
 */
 class Transaction {
     public:
-        static void CreateTransaction(SAConnection& con,
-                                      const char& transaction_type,
-                                      const std::string& customer_email,
-                                      const std::string& facility_name,
-                                      const std::string& shipping_method_type,
-                                      const std::string& shipping_courier,
-                                      const std::string& goods_name,
-                                      const std::string& goods_quantity);
+        static void CreateTransaction(
+            SAConnection& con, const char& transaction_type,
+            const std::string& customer_email, const std::string& facility_name,
+            const std::string& shipping_method_type,
+            const std::string& shipping_courier, const std::string& goods_SKU,
+            const std::string& goods_quantity, const std::string& goods_weight);
 
         static void GetTransactionByCustomer(SAConnection& con,
                                              const std::string& customer_email);

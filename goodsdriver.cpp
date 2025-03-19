@@ -45,7 +45,7 @@ void GoodsDriver::SelectGoodsAPI(SAConnection& con) {
                 std::cout << "\nEnter goods SKU: ";
                 std::getline(std::cin, SKU);
 
-                std::cout << "\nEnter goods category ";
+                std::cout << "\nEnter goods category: ";
                 std::getline(std::cin, category);
 
                 Goods::CreateGoods(con, name, description, SKU, category);
