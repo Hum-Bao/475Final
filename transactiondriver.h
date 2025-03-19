@@ -6,14 +6,15 @@
 #include "SQLAPI/include/SQLAPI.h"
 
 class TransactionDriver {
-    public:
-        static void SelectTransactionAPI(SAConnection& con);
+public:
+    static void SelectTransactionAPI(SAConnection& con);
 
-    private:
-        const static int NUM_METHODS = 4;
-        const static int NUM_FIELDS = 6;
-        const static std::array<std::pair<int, std::string>, NUM_METHODS>
-            METHODS;
-        const static std::array<std::pair<int, std::string>, NUM_FIELDS> FIELDS;
+private:
+    const static int NUM_METHODS = 5; // Fixed to match array size
+    const static int NUM_FIELDS = 6;  // Fixed to match array size
+
+    const static std::array<std::pair<int, std::string>, NUM_METHODS> METHODS;
+    const static std::array<std::pair<int, std::string>, NUM_FIELDS> FIELDS;
 };
+
 #endif

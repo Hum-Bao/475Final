@@ -4,17 +4,17 @@
 #include "SQLAPI/include/SQLAPI.h"
 #include "transaction.h"
 
-const std::array<std::pair<int, std::string>, CustomerDriver::NUM_METHODS>
-    CustomerDriver::METHODS = {{{1, "CreateTransaction"},
+const std::array<std::pair<int, std::string>, TransactionDriver::NUM_METHODS>
+    TransactionDriver::METHODS = {{{1, "CreateTransaction"},
                                 {2, "GetTransactionByCustomer"},
                                 {3, "GetTransactionByFacility"},
                                 {4, "GetTransactionByDateRange"},
                                 {5, "Return"}}};
 
-const std::array<std::pair<int, std::string>, CustomerDriver::NUM_FIELDS>
-    CustomerDriver::FIELDS = {{{1, "TYPE"}, {2, "TIME"}, {3, "SHIPPING"}, {4, "FACILITY"}, {5, "CUSTOMER"} {6, "NUMBER"}}};
+const std::array<std::pair<int, std::string>, TransactionDriver::NUM_FIELDS>
+    TransactionDriver::FIELDS = {{{1, "TYPE"}, {2, "TIME"}, {3, "SHIPPING"}, {4, "FACILITY"}, {5, "CUSTOMER"}, {6, "NUMBER"}}};
 
-void CustomerDriver::SelectTransactionAPI(SAConnection& con) {
+void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
     while (true) {
         std::cout << "Select API call: \n";
         for (const std::pair<int, std::string>& temp : METHODS) {
