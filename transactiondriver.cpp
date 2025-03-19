@@ -6,13 +6,18 @@
 
 const std::array<std::pair<int, std::string>, TransactionDriver::NUM_METHODS>
     TransactionDriver::METHODS = {{{1, "CreateTransaction"},
-                                {2, "GetTransactionByCustomer"},
-                                {3, "GetTransactionByFacility"},
-                                {4, "GetTransactionByDateRange"},
-                                {5, "Return"}}};
+                                   {2, "GetTransactionByCustomer"},
+                                   {3, "GetTransactionByFacility"},
+                                   {4, "GetTransactionByDateRange"},
+                                   {5, "Return"}}};
 
 const std::array<std::pair<int, std::string>, TransactionDriver::NUM_FIELDS>
-    TransactionDriver::FIELDS = {{{1, "TYPE"}, {2, "TIME"}, {3, "SHIPPING"}, {4, "FACILITY"}, {5, "CUSTOMER"}, {6, "NUMBER"}}};
+    TransactionDriver::FIELDS = {{{1, "TYPE"},
+                                  {2, "TIME"},
+                                  {3, "SHIPPING"},
+                                  {4, "FACILITY"},
+                                  {5, "CUSTOMER"},
+                                  {6, "NUMBER"}}};
 
 void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
     while (true) {
@@ -55,7 +60,10 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::cout << "\nEnter goods quantity: ";
                 std::getline(std::cin, goods_quantity);
 
-                Transaction::CreateTransaction(transaction_type, customer_email, facility_name, shipping_method_type, shipping_courier, goods_name, goods_quantity);
+                Transaction::CreateTransaction(
+                    con, transaction_type, customer_email, facility_name,
+                    shipping_method_type, shipping_courier, goods_name,
+                    goods_quantity);
                 break;
             }
             case 2: {
@@ -64,7 +72,7 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::cout << "Enter customer email: ";
                 std::getline(std::cin, customer_email);
 
-                Transaction::GetTransactionByCustomer(customer_email);
+                Transaction::GetTransactionByCustomer(con, customer_email);
                 break;
             }
             case 3: {
@@ -73,7 +81,7 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::cout << "Enter facility name: ";
                 std::getline(std::cin, facility_name);
 
-                Transaction::GetTransactionByFacility(facility_name);
+                Transaction::GetTransactionByFacility(con, facility_name);
                 break;
             }
             case 4: {
@@ -86,7 +94,8 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
                 std::cout << "Enter end date (YYYY-MM-DD): ";
                 std::getline(std::cin, end_date);
 
-                Transaction::GetTransactionByDateRange(start_date, end_date);
+                Transaction::GetTransactionByDateRange(con, start_date,
+                                                       end_date);
                 break;
             }
             case 5: {
