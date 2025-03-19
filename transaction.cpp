@@ -118,7 +118,7 @@ void Transaction::GetTransactionByCustomer(SAConnection& con,
 }
 
 void Transaction::GetTransactionByFacility(SAConnection& con,
-                                           std::string facility_name) {
+                                           const std::string& facility_name) {
     std::string query =
         "SELECT "
         "Transaction.transactionNum, "
