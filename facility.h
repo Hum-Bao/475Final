@@ -18,5 +18,7 @@ class Facility {
                                    const std::string& new_val);
 
         static void ListAllFacilities(SAConnection& con);
+
+        static void ListAllRegions(SAConnection& con);
 };
 #endif

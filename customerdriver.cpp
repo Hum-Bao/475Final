@@ -22,6 +22,7 @@ void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
         }
         int option = 0;
         std::cin >> option;
+        std::cout << "\n";
         switch (option) {
             case 1: {
                 std::string name;
@@ -37,8 +38,7 @@ void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
 
                 std::cout << "\nEnter customer phone number: ";
                 std::getline(std::cin, phone);
-
-                std::cout << name << ", " << email << ", " << phone << "\n";
+                std::cout << "\n";
 
                 Customer::CreateCustomer(con, name, email, phone);
                 break;
@@ -62,9 +62,7 @@ void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
 
                 std::cout << "\nEnter new value: ";
                 std::getline(std::cin, new_val);
-
-                std::cout << email << ", " << change_field << ", " << new_val
-                          << '\n';
+                std::cout << "\n";
 
                 Customer::UpdateCustomer(con, email, change_field, new_val);
                 break;
@@ -75,8 +73,7 @@ void CustomerDriver::SelectCustomerAPI(SAConnection& con) {
 
                 std::cout << "Enter customer email: ";
                 std::getline(std::cin, email);
-
-                std::cout << email << "\n";
+                std::cout << "\n";
 
                 Customer::ViewCustomer(con, email);
                 break;

@@ -7,7 +7,8 @@ const std::array<std::pair<int, std::string>, FacilityDriver::NUM_METHODS>
     FacilityDriver::METHODS = {{{1, "CreateFacility"},
                                 {2, "UpdateFacility"},
                                 {3, "ListAllFacilities"},
-                                {4, "Return"}}};
+                                {4, "ListAllRegions"},
+                                {5, "Return"}}};
 
 const std::array<std::pair<int, std::string>, FacilityDriver::NUM_FIELDS>
     FacilityDriver::FIELDS = {{{1, "NAME"}, {2, "REGION"}}};
@@ -52,7 +53,7 @@ void FacilityDriver::SelectFacilityAPI(SAConnection& con) {
                     std::cout << field.first << ". " << field.second << "\n";
                 }
 
-                int field_option;
+                int field_option = 0;
                 std::cin >> field_option;
 
                 update_field = FIELDS[field_option - 1].second;
@@ -60,6 +61,10 @@ void FacilityDriver::SelectFacilityAPI(SAConnection& con) {
                 std::cout << "Enter new value for " << update_field << ": ";
                 std::cin.ignore();
                 std::getline(std::cin, new_value);
+
+                if (update_field == "REGION") {
+                    update_field += "ID";
+                }
 
                 Facility::UpdateFacility(con, name, update_field, new_value);
                 break;
@@ -69,6 +74,10 @@ void FacilityDriver::SelectFacilityAPI(SAConnection& con) {
                 break;
             }
             case 4: {
+                Facility::ListAllRegions(con);
+                break;
+            }
+            case 5: {
                 return;
             }
             default: {

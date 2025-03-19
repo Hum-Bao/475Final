@@ -5,12 +5,20 @@
 void Customer::CreateCustomer(SAConnection& con, const std::string& name,
                               const std::string& email,
                               const std::string& phone) {
-    SACommand insert(
-        &con,
-        _TSA("INSERT INTO CUSTOMER (NAME, EMAIL, PHONE) VALUES (:1, :2, :3)"));
+    try {
+        SACommand insert(&con, _TSA("INSERT INTO CUSTOMER (NAME, EMAIL, PHONE) "
+                                    "VALUES (:1, :2, :3)"));
 
-    insert << _TSA(name.c_str()) << _TSA(email.c_str()) << _TSA(phone.c_str());
-    insert.Execute();
+        insert << _TSA(name.c_str()) << _TSA(email.c_str())
+               << _TSA(phone.c_str());
+        insert.Execute();
+    } catch (SAException& e) {
+        std::cerr << e.ErrMessage().GetMultiByteChars() << "\n";
+        return;
+    }
+
+    std::cout << "Successfully added customer with name: " << name
+              << " email: " << email << " and phone: " << phone << "\n";
 }
 
 void Customer::UpdateCustomer(SAConnection& con, const std::string& email,
@@ -18,7 +26,7 @@ void Customer::UpdateCustomer(SAConnection& con, const std::string& email,
                               const std::string& new_val) {
 
     //Get customer id
-    SACommand select(&con, _TSA("SELECT ID FROM CUSTOMER WHERE NAME = :1"));
+    SACommand select(&con, _TSA("SELECT ID FROM Customer WHERE email = :1"));
     select << _TSA(email.c_str());
     select.Execute();
 
@@ -27,13 +35,15 @@ void Customer::UpdateCustomer(SAConnection& con, const std::string& email,
 
         //Update record
         std::string command =
-            "UPDATE CUSTOMER SET " + change_field + "= :1 WHERE ID = :2";
+            "UPDATE Customer SET " + change_field + "= :1 WHERE ID = :2";
         SACommand update(&con, _TSA(command.c_str()));
         update << _TSA(new_val.c_str()) << id;
         update.Execute();
     } else {
         std::cerr << "Customer with email: " << email << " not found.\n";
     }
+
+    std::cout << "Successfully updated customer\n";
 }
 
 void Customer::ViewCustomer(SAConnection& con, const std::string& email) {

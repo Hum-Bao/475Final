@@ -11,7 +11,7 @@ const std::array<std::pair<int, std::string>, ShippingDriver::NUM_METHODS>
                                 {6, "Return"}}};
 
 const std::array<std::pair<int, std::string>, ShippingDriver::NUM_FIELDS>
-    ShippingDriver::FIELDS = {{{1, "TYPE"}, {2, "NAME"}}};
+    ShippingDriver::FIELDS = {{{1, "TYPE"}, {2, "COURIER"}}};
 
 void ShippingDriver::SelectShippingAPI(SAConnection& con) {
     while (true) {
@@ -60,6 +60,8 @@ void ShippingDriver::SelectShippingAPI(SAConnection& con) {
 
                 std::cout << "\nEnter new value: ";
                 std::getline(std::cin, new_val);
+
+                change_field += "ID";
 
                 Shipping::UpdateShippingMethod(con, type, courier, change_field,
                                                new_val);

@@ -2,39 +2,94 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include "SQLAPI/include/SQLAPI.h"
 
 void Shipping::CreateShippingMethod(SAConnection& con, const std::string& type,
                                     const std::string& courier) {
-    SACommand insert(
-        &con, _TSA("INSERT INTO SHIPPING (TYPE, COURIER) VALUES (:1, :2)"));
+    std::map<std::string, int> shipping_types = std::map<std::string, int>();
+    std::map<std::string, int> shipping_couriers = std::map<std::string, int>();
 
-    insert << _TSA(type.c_str()) << _TSA(courier.c_str());
-    insert.Execute();
+    SACommand select_type(&con, _TSA("SELECT * FROM ShippingType"));
+    select_type.Execute();
+    while (select_type.FetchNext()) {
+        shipping_types[select_type[2].asString().GetMultiByteChars()] =
+            select_type[1].asInt32();
+    }
+
+    SACommand select_courier(&con, _TSA("SELECT * FROM ShippingCourier"));
+    select_courier.Execute();
+    while (select_courier.FetchNext()) {
+        shipping_couriers[select_courier[2].asString().GetMultiByteChars()] =
+            select_courier[1].asInt32();
+    }
+    try {
+        SACommand insert(&con, _TSA("INSERT INTO ShippingMethod (typeID, "
+                                    "courierID) VALUES (:1, :2)"));
+
+        insert << _TSA(shipping_types[type])
+               << _TSA(shipping_couriers[courier]);
+        insert.Execute();
+    } catch (SAException& e) {
+        std::cerr << e.ErrMessage().GetMultiByteChars() << "\n";
+        return;
+    }
+    std::cout << "Successfully created Shipping Method with type: " << type
+              << " and courier: " << courier << "\n";
 }
 
 void Shipping::UpdateShippingMethod(SAConnection& con, const std::string& type,
                                     const std::string& courier,
                                     const std::string& change_field,
                                     const std::string& new_val) {
-    //Get Shipping id
-    SACommand select(
-        &con, _TSA("SELECT ID FROM SHIPPING WHERE TYPE = :1 AND COURIER = :2"));
-    select << _TSA(type.c_str()) << _TSA(courier.c_str());
-    select.Execute();
 
-    if (select.FetchNext()) {
-        int id = select.Field(1).asLong();
+    std::map<std::string, int> shipping_types = std::map<std::string, int>();
+    std::map<std::string, int> shipping_couriers = std::map<std::string, int>();
 
-        //Update record
-        std::string command =
-            "UPDATE CUSTOMER SET " + change_field + "= :1 WHERE ID = :2";
-        SACommand update(&con, _TSA(command.c_str()));
-        update << _TSA(new_val.c_str()) << id;
-        update.Execute();
-    } else {
-        std::cerr << "Shipping method: " << type << ", " << courier
-                  << " not found.\n";
+    SACommand select_type(&con, _TSA("SELECT * FROM ShippingType"));
+    select_type.Execute();
+    while (select_type.FetchNext()) {
+        shipping_types[select_type[2].asString().GetMultiByteChars()] =
+            select_type[1].asInt32();
     }
+
+    SACommand select_courier(&con, _TSA("SELECT * FROM ShippingCourier"));
+    select_courier.Execute();
+    while (select_courier.FetchNext()) {
+        shipping_couriers[select_courier[2].asString().GetMultiByteChars()] =
+            select_courier[1].asInt32();
+    }
+    try {
+        //Get Shipping id
+        SACommand select(&con,
+                         _TSA("SELECT ID FROM ShippingMethod WHERE typeID = "
+                              ":1 AND courierID = :2"));
+        select << _TSA(shipping_types[type])
+               << _TSA(shipping_couriers[courier]);
+        select.Execute();
+
+        if (select.FetchNext()) {
+            int id = select[1].asInt32();
+
+            //Update record
+            std::string command = "UPDATE ShippingMethod SET " + change_field +
+                                  " = :1 WHERE ID = :2";
+            SACommand update(&con, _TSA(command.c_str()));
+            if (change_field == "TYPEID") {
+                update << _TSA(shipping_types[new_val]) << _TSA(id);
+            } else {
+                update << _TSA(shipping_couriers[new_val]) << _TSA(id);
+            }
+
+            update.Execute();
+        } else {
+            std::cerr << "Shipping method: " << type << ", " << courier
+                      << " not found.\n";
+        }
+    } catch (SAException& e) {
+        std::cerr << e.ErrMessage().GetMultiByteChars() << "\n";
+        return;
+    }
+    std::cout << "Successfully updated shipping method\n";
 }
 
 void Shipping::ListAllShippingMethods(SAConnection& con) {

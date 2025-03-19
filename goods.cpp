@@ -34,36 +34,42 @@ void Goods::UpdateGoods(SAConnection& con, const std::string& SKU,
                         const std::string& change_field, std::string new_val) {
 
     //Get Good id
-    SACommand select(&con, _TSA("SELECT ID FROM SHIPPING WHERE SKU = :1"));
+    SACommand select(&con, _TSA("SELECT ID FROM Good WHERE SKU = :1"));
     select << _TSA(SKU.c_str());
     select.Execute();
+    try {
+        if (select.FetchNext()) {
+            int id = select.Field(1).asLong();
 
-    if (select.FetchNext()) {
-        int id = select.Field(1).asLong();
-
-        if (change_field == "CATEGORYID") {
-            std::string command =
-                "SELECT id FROM GoodCategory WHERE name = '" + new_val + "'";
-            SACommand select_category(&con, _TSA(command.c_str()));
-            select_category.Execute();
-            if (select_category.FetchNext()) {
-                new_val = select_category[1].asString();
-            } else {
-                std::cerr << "Category: " << new_val
-                          << " does not exist. Please add the category and "
-                             "then try again\n";
+            if (change_field == "CATEGORYID") {
+                std::string command =
+                    "SELECT id FROM GoodCategory WHERE name = '" + new_val +
+                    "'";
+                SACommand select_category(&con, _TSA(command.c_str()));
+                select_category.Execute();
+                if (select_category.FetchNext()) {
+                    new_val = select_category[1].asString();
+                } else {
+                    std::cerr << "Category: " << new_val
+                              << " does not exist. Please add the category and "
+                                 "then try again\n";
+                }
             }
-        }
 
-        //Update record
-        std::string command =
-            "UPDATE GOOD SET " + change_field + "= :1 WHERE ID = :2";
-        SACommand update(&con, _TSA(command.c_str()));
-        update << _TSA(new_val.c_str()) << id;
-        update.Execute();
-    } else {
-        std::cerr << "SKU: " << SKU << " not found.\n";
+            //Update record
+            std::string command =
+                "UPDATE GOOD SET " + change_field + " = :1 WHERE ID = :2";
+            SACommand update(&con, _TSA(command.c_str()));
+            update << _TSA(new_val.c_str()) << _TSA(id);
+            update.Execute();
+        } else {
+            std::cerr << "SKU: " << SKU << " not found.\n";
+        }
+    } catch (SAException& e) {
+        std::cerr << e.ErrMessage().GetMultiByteChars() << "\n";
+        return;
     }
+    std::cout << "Good successfully updated\n";
 }
 
 void Goods::SearchGoods(SAConnection& con, const std::string& name) {
@@ -94,7 +100,8 @@ void Goods::SearchGoods(SAConnection& con, const std::string& name) {
             std::cout << "  Description: "
                       << select_description.GetMultiByteChars() << "\n";
             std::cout << "  SKU: " << select_SKU.GetMultiByteChars() << "\n";
-            std::cout << "  Category: " << categories[search[5].asInt32()];
+            std::cout << "  Category: " << categories[search[5].asInt32()]
+                      << "\n";
             std::cout << "\n";
         }
     }
@@ -127,7 +134,7 @@ void Goods::ListAllGoods(SAConnection& con) {
         std::cout << "  Description: " << select_description.GetMultiByteChars()
                   << "\n";
         std::cout << "  SKU: " << select_SKU.GetMultiByteChars() << "\n";
-        std::cout << "  Category: " << categories[select[5].asInt32()];
+        std::cout << "  Category: " << categories[select[5].asInt32()] << "\n";
         std::cout << "\n";
     }
 }
@@ -171,7 +178,9 @@ void Goods::CreateGoodsCategory(SAConnection& con, const std::string& name) {
                          "category: "
                       << name << "\n";
         }
+        return;
     }
+    std::cout << "Category: " << name << " successfully added\n";
 }
 
 void Goods::ListAllGoodsCategories(SAConnection& con) {

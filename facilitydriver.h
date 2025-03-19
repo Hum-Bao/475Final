@@ -10,7 +10,7 @@ class FacilityDriver {
         static void SelectFacilityAPI(SAConnection& con);
 
     private:
-        const static int NUM_METHODS = 4;
+        const static int NUM_METHODS = 5;
         const static int NUM_FIELDS = 2;
         const static std::array<std::pair<int, std::string>, NUM_METHODS>
             METHODS;
