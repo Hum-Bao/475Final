@@ -37,7 +37,15 @@ int main() {
             std::cout << temp.first << ". " << temp.second << "\n";
         }
         int option = 0;
+
         std::cin >> option;
+
+        while (!std::cin.good()) {
+            std::cout.clear();
+            std::cin.clear();
+            std::cin.ignore();
+            std::cin >> option;
+        }
 
         switch (option) {
             case 1: {
@@ -67,7 +75,7 @@ int main() {
                 return 0;
             }
             default: {
-                std::cout << "Not yet implemented\n";
+                std::cout << "Invalid API option: " << option << "\n";
                 break;
             }
         }

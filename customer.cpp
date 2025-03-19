@@ -69,7 +69,7 @@ void Customer::ListAllCustomers(SAConnection& con) {
     SAString select_name;
     SAString select_email;
     SAString select_phone;
-    std::cout << "Showing " << select.RowsAffected() << " customers\n";
+    std::cout << "Showing " << select.RowsAffected() << " customers:\n";
     while (select.FetchNext()) {
         //Select[1] is the id
         select_name = select[2].asString();
