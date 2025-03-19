@@ -329,7 +329,6 @@ void Transaction::GetTransactionByFacility(SAConnection& con,
     }
 }
 
-//Maybe use std::time or ctime instead of string?
 void Transaction::GetTransactionByDateRange(SAConnection& con,
                                             const std::string& start_date,
                                             const std::string& end_date) {
