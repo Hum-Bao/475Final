@@ -1,9 +1,11 @@
 #include <iostream>
 #include "customerdriver.h"
+#include "facilitydriver.h"
 #include "goodsdriver.h"
 #include "shippingdriver.h"
 
 #include "SQLAPI/include/SQLAPI.h"
+#include "transactiondriver.h"
 
 const int NUM_APIS = 6;
 
@@ -43,11 +45,11 @@ int main() {
                 break;
             }
             case 2: {
-                //Transaction
+                TransactionDriver::SelectTransactionAPI(con);
                 break;
             }
             case 3: {
-                //Facility
+                FacilityDriver::SelectFacilityAPI(con);
                 break;
             }
             case 4: {

@@ -41,6 +41,7 @@ void TransactionDriver::SelectTransactionAPI(SAConnection& con) {
 
                 std::cout << "Enter transaction type: ";
                 std::cin >> transaction_type;
+                std::cin.ignore();
 
                 std::cout << "\nEnter customer email: ";
                 std::getline(std::cin, customer_email);
