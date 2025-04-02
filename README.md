@@ -1,4 +1,4 @@
-CSS475 Final
+UWB CSS-475 Final Project
 
 Install steps:
 
